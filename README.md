@@ -7,5 +7,5 @@ Yleisiä linkkejä:
 
 ## Työn aihe
 
-Työn aiheena on ystävänvälityspalvelu, jonka tarkempi kuvaus [löytyy täältä](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html). 
+Työn aiheena on **ystävänvälityspalvelu**, jonka tarkempi kuvaus [löytyy täältä](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html). 
 Kuvauksesta hiukan poiketen, järjestelmää ei luoda PariTELE Oy:lle. Järjestelmä on myös ilmainen eli siitä ei lähetetä laskua käyttäjille.
