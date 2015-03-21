@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Käyttäjät</h1>
+<br>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Käyttäjätunnus</th>
+            <th>Syntymävuosi</th>
+            <th>Sukupuoli</th>
+            <th>Paikkakunta</th>
+            <th>Tietoja minusta</th>
+            <th>Mitä haen</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td><a href="#">Misu</a></td>
+            <td>1990</td>
+            <td>N</td>
+            <td>Helsinki</td>
+            <td>Iloinen ja eläinrakas ...</td>
+            <td>Kavereita</td>
+            <th><a class="btn btn-default btn-sm" href="#">Lähetä viesti</a></th>
+        </tr>
+        <tr>
+            <td><a href="#">Salamanteri</a></td>
+            <td>1991</td>
+            <td>M</td>
+            <td>Turku</td>
+            <td>Persoonallinen ...</td>
+            <td>Harrastusseuraa</td>
+            <th><a class="btn btn-default btn-sm" href="#">Lähetä viesti</a></th>
+        </tr>
+    </tbody>
+</table>
+{% endblock %}
