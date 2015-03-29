@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="alert alert-success">
+    {{message}}
+</div>
+
+<h2>Käyttäjän {{kayttaja.kayttajatunnus}} profiili</h2>
+<br>
+<br>
+<br>
+
+<dl class="dl-horizontal">
+    <dt>Nimi: </dt>
+    <dd>{{kayttaja.nimi}}</dd>
+    <dt>Syntymäaika: </dt>
+    <dd>{{kayttaja.tulostaSyntymaaika()}}</dd>
+    <dt>Paikkakunta: </dt>
+    <dd>{{kayttaja.paikkakunta}}</dd>
+    <dt>Sukupuoli: </dt>
+    <dd>{{kayttaja.getSukupuoli()}}</dd>
+    <dt>Mitä haen: </dt>
+    <dd>{{kayttaja.hakutarkoitusid}}</dd>
+</dl>
+<br>
+<dl class="dl-horizontal">
+    <dt>Tietoja minusta </dt>
+    <dd>{{kayttaja.omattiedot}}</dd>
+</dl>
+<br>
+<br>
+<br>
+<div class="form-group">
+    <a class="btn btn-primary" href="#" role="button">Lähetä viesti</a>
+</div>
+
+{% endblock %}

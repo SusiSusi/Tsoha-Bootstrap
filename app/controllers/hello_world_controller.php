@@ -8,8 +8,11 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
-        // Testaa koodiasi täällä
-        View::make('helloworld.html');
+        $miisis = Hakutarkoitus::etsiHakutarkoitus(1);
+        $kayttajat = Hakutarkoitus::kaikkiHakutarkoitukset();
+
+        Kint::dump($kayttajat);
+        Kint::dump($miisis);
     }
 
     public static function login() {
@@ -17,7 +20,7 @@ class HelloWorldController extends BaseController {
     }
 
     public static function rekisterointi() {
-        View::make('suunnitelmat/rekisterointi.html');
+        View::make('suunnitelmat/rekisterointiMalli.html');
     }
 
     public static function etusivu() {

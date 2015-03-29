@@ -1,5 +1,9 @@
 <?php
 
+$routes->get('/rekisterointi', function() {
+    HakutarkoitusController::tarkoitukset();
+});
+
 $routes->get('/', function() {
     HelloWorldController::index();
 });
@@ -12,7 +16,7 @@ $routes->get('/kirjautumissivu', function() {
     HelloWorldController::login();
 });
 
-$routes->get('/rekisterointi', function() {
+$routes->get('/rekisterointiMalli', function() {
     HelloWorldController::rekisterointi();
 });
 
@@ -26,4 +30,24 @@ $routes->get('/kayttajienListaus', function() {
 
 $routes->get('/muokkaaProfiilia', function() {
     HelloWorldController::muokkaa();
+});
+
+$routes->get('/kayttajienListaukset', function() {
+    KayttajaController::index();
+});
+
+$routes->post('/kayttaja', function() {
+    KayttajaController::store();
+});
+
+$routes->get('/rekisterointi', function() {
+    KayttajaController::luo();
+});
+
+$routes->get('/julkinenProfiilisivu/:id', function($id) {
+    KayttajaController::nayta($id);
+});
+
+$routes->get('/julkinenProfiilisivu/:id', function($id) {
+    HakutarkoitusController::naytaTarkoitus($id);
 });
