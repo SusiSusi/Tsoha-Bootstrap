@@ -95,7 +95,7 @@ class KayttajaController extends BaseController {
 //            View::make('kayttaja/muokkaa.html', array('errors' => $errors, 'attributes' => $attributes));
 //        } else {
         $kayttaja->muokkaa($id);
-        Redirect::to('/julkinenProfiilisivu/' . $kayttaja->id, array('message' => 'Profiilisivun muokkaus onnistui!'));
+        Redirect::to('/omaProfiilisivu/' . $kayttaja->id, array('message' => 'Profiilisivun muokkaus onnistui!'));
 //        }
     }
 

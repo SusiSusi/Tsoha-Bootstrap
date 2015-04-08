@@ -7,7 +7,9 @@ class Kayttaja extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array(BaseModel::validate_string_length($this->kayttajatunnus, 6, 20));
+        $this->validators = array(BaseModel::onkoKayttajatunnusVapaana($this->kayttajatunnus), 
+            BaseModel::validate_string_length($this->kayttajatunnus, 6, 20)
+        );
     }
 
     public function getKayttajatunnus() {
@@ -71,7 +73,7 @@ class Kayttaja extends BaseModel {
     }
 
     public static function kaikkiKayttajat() {
-        $kysely = DB::connection()->prepare('SELECT distinct * FROM Kayttaja');
+        $kysely = DB::connection()->prepare('SELECT distinct * FROM Kayttaja ORDER BY id desc');
         $kysely->execute();
         $rivit = $kysely->fetchAll();
         $kayttajat = array();

@@ -18,7 +18,7 @@
 
 <form method="post" action="{{base_path}}/{{kayttaja.id}}/muokkaa">
     <div class="form-group">
-        <label>Nimimerkki</label>
+        <label>Käyttäjätunnus</label>
         <input name='kayttajatunnus' class="form-control" value="{{kayttaja.kayttajatunnus}}" type="text" disabled="disabled">
     </div>
     <div class="form-group">
@@ -117,7 +117,7 @@
     <h3>Tallenna muutokset salasanalla</h3>
     <div class="form-group">
         <label>Salasana</label>
-        <input class="form-control" type="password" required>
+        <input name="salasana" class="form-control" type="password" required>
     </div>
 
     <div class="form-group">

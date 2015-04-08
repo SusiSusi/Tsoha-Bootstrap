@@ -34,12 +34,24 @@ class BaseModel {
             $errors[] = 'Nimi ei saa olla tyhjä!';
         }
         if (strlen($sana) < $minPituus) {
-            $errors[] = ' pituuden tulee olla vähintään ' . $minPituus . ' merkkiä pitkä';
+            $errors[] = 'Käyttäjätunnuksen pituuden tulee olla vähintään ' . $minPituus . ' merkkiä pitkä';
         }
         if ($maxPituus != -1) {
             if (strlen($sana) > $maxPituus) {
-                $errors[] = ' pituus saa olla enintään ' . $maxPituus . ' merkkiä pitkä';
+                $errors[] = 'Käyttäjätunnuksen pituus saa olla enintään ' . $maxPituus . ' merkkiä pitkä';
             }
+        }
+        return $errors;
+    }
+
+    public function onkoKayttajatunnusVapaana($kayttajatunnus) {
+        $errors = array();
+        $kysely = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE kayttajatunnus = :kayttajatunnus LIMIT 1');
+        $kysely->execute(array('kayttajatunnus' => $kayttajatunnus));
+        $rivi = $kysely->fetch();
+
+        if ($rivi) {
+            $errors[] = 'Käyttäjätunnus ' . $kayttajatunnus . ' on jo käytössä. Valitse joku muu.';
         }
         return $errors;
     }
