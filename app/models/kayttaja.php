@@ -13,6 +13,11 @@ class Kayttaja extends BaseModel {
     public function getKayttajatunnus() {
         return $this->kayttajatunnus;
     }
+    
+    public function getKuva() {
+        $kuva = asset($this->kuva);
+        return $kuva;
+    }
 
 //    public function getHakutarkoitusNimi() {
 //      $ti = Hakutarkoitus::etsiHakutarkoitus($this->hakutarkoitusid);
@@ -140,6 +145,33 @@ class Kayttaja extends BaseModel {
         $rivi = $kysely->fetch();
 //        Kint::trace();
 //        Kint::dump($rivi);
+    }
+
+    public function authenticate($kayttajatunnus, $salasana) {
+        $kysely = DB::connection()->prepare('SELECT * FROM Kayttaja
+                WHERE kayttajatunnus = :kayttajatunnus AND salasana = :salasana LIMIT 1');
+        $kysely->execute(array('kayttajatunnus' => $kayttajatunnus, 'salasana' => $salasana));
+        $rivi = $kysely->fetch();
+//        Kint::trace();
+//        Kint::dump($rivi);
+        if ($rivi) {
+            $kayttaja = new Kayttaja(array(
+                'id' => $rivi['id'],
+                'kayttajatunnus' => $rivi['kayttajatunnus'],
+                'nimi' => $rivi['nimi'],
+                'salasana' => $rivi['salasana'],
+                'syntymaaika' => $rivi['syntymaaika'],
+                'sukupuoli' => $rivi['sukupuoli'],
+                'paikkakunta' => $rivi['paikkakunta'],
+                'omattiedot' => $rivi['omattiedot'],
+                'kuva' => $rivi['kuva'],
+                'hakutarkoitusid' => $rivi['hakutarkoitusid'],
+                'oikeudet' => $rivi['oikeudet']
+            ));
+            return $kayttaja;
+        } else {
+            return null;
+        }
     }
 
 }

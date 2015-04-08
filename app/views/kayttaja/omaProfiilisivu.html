@@ -2,14 +2,21 @@
 {% block content %}
 {% import "macros/forms.html" as forms %}
 
-{% if user_logged_in %}
-<h1>Poista profiili {{user_logged_in.kayttajatunnus}}</h1>
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
 {% endif %}
+
+<h1>Omat tietoni</h1>
+
 <br>
 <br>
 <br>
 
 <dl class="dl-horizontal">
+    <dt>Käyttäjätunnus: </dt>
+    <dd>{{kayttaja.kayttajatunnus}}</dd>
     <dt>Nimi: </dt>
     <dd>{{kayttaja.nimi}}</dd>
     <dt>Syntymäaika: </dt>
@@ -32,22 +39,9 @@
     <dd>{{kayttaja.omattiedot}}</dd>
 </dl>
 <br>
-<div class="panel panel-danger">
-    <div class="panel-heading">
-        <h3 class="panel-title">Haluatko varmasti poistaa käyttäjätunnuksen?</h3>
-    </div>
-    <div class="panel-body">
-        Mikäli poistat käyttäjätunnuksen häviävät kaikki viestit eikä tunnusta voida enää palauttaa.
-        Hyväksy käyttäjätunnuksen poisto syöttämällä salasana.
-        <br>
-        <br>
-        <div class="form-group">
-            <label>Salasana</label>
-            <input class="form-control" type="password" required>
-        </div>
-        {{forms.poista_nappi("#{base_path}/#{kayttaja.id}/poistaTunnus")}}
-    </div>
+<br>
+<br>
+<div class="form-group">
+    <a class="btn btn-info" href="{{base_path}}/{{user_logged_in.id}}/muokkaa" role="button">Muokkaa profiilia</a>
 </div>
-
-
 {% endblock %}

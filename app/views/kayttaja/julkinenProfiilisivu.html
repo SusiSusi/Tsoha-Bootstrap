@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% if message %}
 <div class="alert alert-success">
     {{message}}
 </div>
+{% endif %}
 
 <h2>Käyttäjän {{kayttaja.kayttajatunnus}} profiili</h2>
 <br>

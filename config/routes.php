@@ -1,11 +1,15 @@
 <?php
 
-$routes->get('/rekisterointi', function() {
-    HakutarkoitusController::tarkoitukset();
+$routes->get('/kirjautuminen', function() {
+    UserController::login();
 });
 
-$routes->get('/', function() {
-    HelloWorldController::index();
+$routes->post('/kirjautuminen', function() {
+    UserController::handle_login();
+});
+
+$routes->get('/rekisterointi', function() {
+    HakutarkoitusController::tarkoitukset();
 });
 
 $routes->get('/hiekkalaatikko', function() {
@@ -32,6 +36,10 @@ $routes->get('/muokkaaProfiilia', function() {
     HelloWorldController::muokkaa();
 });
 
+$routes->get('/', function() {
+    KayttajaController::etusivu();
+});
+
 $routes->get('/kayttajienListaukset', function() {
     KayttajaController::index();
 });
@@ -48,8 +56,13 @@ $routes->get('/rekisterointi', function() {
     KayttajaController::luo();
 });
 
+
 $routes->get('/julkinenProfiilisivu/:id', function($id) {
     KayttajaController::nayta($id);
+});
+
+$routes->get('/omaProfiilisivu/:id', function($id) {
+    KayttajaController::naytaOmaSivu($id);
 });
 
 $routes->get('/:id/muokkaa', function($id) {
@@ -66,6 +79,10 @@ $routes->get('/:id/poistaTunnus', function($id) {
 
 $routes->post('/:id/poistaTunnus', function($id) {
     KayttajaController::poista($id);
+});
+
+$routes->post('/logout', function() {
+    UserController::logout();
 });
 //$routes->get('/julkinenProfiilisivu/:id', function($id) {
 //    HakutarkoitusController::naytaTarkoitus($id);

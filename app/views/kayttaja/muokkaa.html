@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "macros/forms.html" as forms %}
 
 {% if errors %}
 <div class="alert alert-danger">
@@ -11,7 +12,9 @@
 </div>
 {% endif %}
 
-<h1>Muokkaa profiilia {{kayttaja.kayttajatunnus}}</h1>
+{% if user_logged_in %}
+<h1>Muokkaa profiilia {{user_logged_in.kayttajatunnus}}</h1>
+{% endif %}
 
 <form method="post" action="{{base_path}}/{{kayttaja.id}}/muokkaa">
     <div class="form-group">

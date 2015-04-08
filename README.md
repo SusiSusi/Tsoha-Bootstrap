@@ -3,6 +3,15 @@
 Yleisiä linkkejä:
 
 * [Linkki sovellukseeni](http://susisusi.users.cs.helsinki.fi/tsoha2015/)
+
+####Testitunnuksia
+Käyttäjätunnus | Salasana
+---------------|---------
+Mollyska|MONIA23
+Salamanteri|Saku1
+Togle|togle
+PitkäKana|tipu
+
 * [Linkki dokumentaatiooni](https://github.com/SusiSusi/Tsoha-Bootstrap/blob/master/doc/dokumentaatio.pdf)
 
 ## Työn aihe
@@ -10,7 +19,7 @@ Yleisiä linkkejä:
 Työn aiheena on **ystävänvälityspalvelu**, jonka tarkempi kuvaus [löytyy täältä](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html). 
 Kuvauksesta hiukan poiketen, järjestelmää ei luoda PariTELE Oy:lle. Järjestelmä on myös ilmainen eli siitä ei lähetetä laskua käyttäjille.
 
-## Linkit suunnittelusivuille
+### Linkit suunnittelusivuille
 * [Etusivu](http://susisusi.users.cs.helsinki.fi/tsoha2015//etusivu)
 * [Kirjautuminen](http://susisusi.users.cs.helsinki.fi/tsoha2015//kirjautumissivu)
 * [Käyttäjien listaus](http://susisusi.users.cs.helsinki.fi/tsoha2015/kayttajienListaus)

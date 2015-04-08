@@ -31,7 +31,7 @@ class HelloWorldController extends BaseController {
     }
 
     public static function etusivu() {
-        View::make('suunnitelmat/etusivu.html');
+        View::make('suunnitelmat/etusivuMalli.html');
     }
 
     public static function listaus() {

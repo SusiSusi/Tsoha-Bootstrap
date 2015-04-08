@@ -5,6 +5,7 @@
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
+            <th></th>
             <th>Käyttäjätunnus</th>
             <th>Syntymävuosi</th>
             <th>Sukupuoli</th>
@@ -20,6 +21,11 @@
         
         
         <tr>
+            {% if kayttaja.kuva != null %}
+            <td><img src="{{kayttaja.kuva}}" class="img-rounded" alt="profiilikuva" style="width:64px;height:64px"></td>
+            {% else %}
+            <td>
+            {% endif %}
             <td><a href="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}">{{kayttaja.kayttajatunnus}}</a></td>
             <td>{{kayttaja.tulostaSyntymaVuosi()}}</td>
             <td>{{kayttaja.sukupuoli}}</td>
