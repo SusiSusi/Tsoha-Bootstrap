@@ -20,7 +20,12 @@
     <dt>Sukupuoli: </dt>
     <dd>{{kayttaja.getSukupuoli()}}</dd>
     <dt>Mitä haen: </dt>
-    <dd>{{kayttaja.hakutarkoitusid}}</dd>
+    {% for tarkotus in tarkoitukset %}
+    {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+   <dd>{{tarkotus.nimi}}</dd>
+    {% endif %}
+    {% endfor %}
+    
 </dl>
 <br>
 <dl class="dl-horizontal">

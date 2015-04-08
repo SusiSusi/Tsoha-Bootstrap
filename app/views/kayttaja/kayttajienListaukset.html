@@ -17,15 +17,23 @@
 
     <tbody>
         {% for kayttaja in kayttajat %}
+        
+        
         <tr>
             <td><a href="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}">{{kayttaja.kayttajatunnus}}</a></td>
             <td>{{kayttaja.tulostaSyntymaVuosi()}}</td>
             <td>{{kayttaja.sukupuoli}}</td>
             <td>{{kayttaja.paikkakunta}}</td>
             <td>{{kayttaja.omattiedot}}</td>
-            <td>{{kayttaja.hakutarkoitusid}}</td>
+            {% for tarkotus in tarkoitukset %}
+            {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+            <td>{{tarkotus.nimi}}</td>
+             {% endif %}
+             {% endfor %}
             <th><a class="btn btn-default btn-sm" href="#">Lähetä viesti</a></th>
         </tr>
+       
+            
         {% endfor %}
     </tbody>
 </table>

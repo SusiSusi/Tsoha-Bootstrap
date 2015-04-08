@@ -36,6 +36,10 @@ $routes->get('/kayttajienListaukset', function() {
     KayttajaController::index();
 });
 
+//$routes->get('/rekisterointi', function() {
+//    KayttajaController::tarkoitukset();
+//});
+
 $routes->post('/kayttaja', function() {
     KayttajaController::store();
 });
@@ -48,6 +52,21 @@ $routes->get('/julkinenProfiilisivu/:id', function($id) {
     KayttajaController::nayta($id);
 });
 
-$routes->get('/julkinenProfiilisivu/:id', function($id) {
-    HakutarkoitusController::naytaTarkoitus($id);
+$routes->get('/:id/muokkaa', function($id) {
+    KayttajaController::edit($id);
 });
+
+$routes->post('/:id/muokkaa', function($id) {
+    KayttajaController::update($id);
+});
+
+$routes->get('/:id/poistaTunnus', function($id) {
+    KayttajaController::poistaTunnus($id);
+});
+
+$routes->post('/:id/poistaTunnus', function($id) {
+    KayttajaController::poista($id);
+});
+//$routes->get('/julkinenProfiilisivu/:id', function($id) {
+//    HakutarkoitusController::naytaTarkoitus($id);
+//});

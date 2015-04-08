@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "macros/forms.html" as forms %}
+
+
+<h1>Poista profiili {{kayttaja.kayttajatunnus}}</h1>
+<br>
+<br>
+<br>
+
+<dl class="dl-horizontal">
+    <dt>Nimi: </dt>
+    <dd>{{kayttaja.nimi}}</dd>
+    <dt>Syntymäaika: </dt>
+    <dd>{{kayttaja.tulostaSyntymaaika()}}</dd>
+    <dt>Paikkakunta: </dt>
+    <dd>{{kayttaja.paikkakunta}}</dd>
+    <dt>Sukupuoli: </dt>
+    <dd>{{kayttaja.getSukupuoli()}}</dd>
+    <dt>Mitä haen: </dt>
+    {% for tarkotus in tarkoitukset %}
+    {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+    <dd>{{tarkotus.nimi}}</dd>
+    {% endif %}
+    {% endfor %}
+
+</dl>
+<br>
+<dl class="dl-horizontal">
+    <dt>Tietoja minusta </dt>
+    <dd>{{kayttaja.omattiedot}}</dd>
+</dl>
+<br>
+<div class="panel panel-danger">
+    <div class="panel-heading">
+        <h3 class="panel-title">Haluatko varmasti poistaa käyttäjätunnuksen?</h3>
+    </div>
+    <div class="panel-body">
+        Mikäli poistat käyttäjätunnuksen häviävät kaikki viestit eikä tunnusta voida enää palauttaa.
+        Hyväksy käyttäjätunnuksen poisto syöttämällä salasana.
+        <br>
+        <br>
+        <div class="form-group">
+            <label>Salasana</label>
+            <input class="form-control" type="password" required>
+        </div>
+        {{forms.poista_nappi("#{base_path}/#{kayttaja.id}/poistaTunnus")}}
+    </div>
+</div>
+
+
+{% endblock %}

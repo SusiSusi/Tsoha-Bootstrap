@@ -7,6 +7,7 @@ class Kayttaja extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
+        $this->validators = array(BaseModel::validate_string_length($this->kayttajatunnus, 6, 20));
     }
 
     public function getKayttajatunnus() {
@@ -27,7 +28,17 @@ class Kayttaja extends BaseModel {
         }
     }
 
-    public function tulostaSyntymaVuosi() {
+    public function tulostaPaiva() {
+        $paiva = date('d', strtotime($this->syntymaaika));
+        return $paiva;
+    }
+
+    public function tulostaKuukausi() {
+        $kuukausi = date('m', strtotime($this->syntymaaika));
+        return $kuukausi;
+    }
+
+    public function tulostaSyntymavuosi() {
         $vuosi = date('Y', strtotime($this->syntymaaika));
         return $vuosi;
     }
@@ -103,6 +114,32 @@ class Kayttaja extends BaseModel {
         }
 
         return null;
+    }
+
+    public function muokkaa($id) {
+        $kysely = DB::connection()->prepare('UPDATE Kayttaja
+                SET nimi = :nimi, syntymaaika = :syntymaaika,  
+                paikkakunta = :paikkakunta, omattiedot = :omattiedot, 
+                hakutarkoitusid = :hakutarkoitusid, kuva = :kuva
+                WHERE id = :id RETURNING id');
+        $kysely->execute(array('id' => $id, 'nimi' => $this->nimi,
+            'syntymaaika' => $this->syntymaaika,
+            'paikkakunta' => $this->paikkakunta,
+            'omattiedot' => $this->omattiedot, 'hakutarkoitusid' => $this->hakutarkoitusid,
+            'kuva' => $this->kuva));
+        $rivi = $kysely->fetch();
+//        Kint::trace();
+//        Kint::dump($rivi);
+        $this->id = $rivi['id'];
+    }
+
+    public function poistaTunnus($id) {
+        $kysely = DB::connection()->prepare('DELETE FROM Kayttaja
+                WHERE id = :id RETURNING id');
+        $kysely->execute(array('id' => $id));
+        $rivi = $kysely->fetch();
+//        Kint::trace();
+//        Kint::dump($rivi);
     }
 
 }

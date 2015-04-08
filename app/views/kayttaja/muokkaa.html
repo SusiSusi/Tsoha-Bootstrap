@@ -11,40 +11,27 @@
 </div>
 {% endif %}
 
-<h1>Rekisteröinti</h1>
+<h1>Muokkaa profiilia {{kayttaja.kayttajatunnus}}</h1>
 
-<form method="post" action="{{base_path}}/kayttaja">
+<form method="post" action="{{base_path}}/{{kayttaja.id}}/muokkaa">
     <div class="form-group">
         <label>Nimimerkki</label>
-        <input name="kayttajatunnus" class="form-control" value="{{attributes.kayttajatunnus}}" type="text" required>
-    </div>
-    <div class="form-group">
-        <label>Salasana</label>
-        <input name="salasana" class="form-control" type="password" required>
-    </div>
-    <div class="form-group">
-        <label>Salasana uudelleen</label>
-        <input name="salasana2" class="form-control" type="password" required>
+        <input name='kayttajatunnus' class="form-control" value="{{kayttaja.kayttajatunnus}}" type="text" disabled="disabled">
     </div>
     <div class="form-group">
         <label>Nimi</label>
-        <input name="nimi" class="form-control" value="{{attributes.nimi}}" type="text" required>
+        <input name='nimi' class="form-control" value="{{kayttaja.nimi}}" type="text" required>
     </div>
     <div class="form-group">
         <label>Sukupuoli</label>
         <br>
-        {% if attributes.sukupuoli == NULL %}
-        <input type="radio" name="sukupuoli" value="N" required>
-        Nainen
-        <input type="radio" name="sukupuoli" value="M" required>
-        Mies
-        {% elseif attributes.sukupuoli == 'N' %}
+        {% if kayttaja.sukupuoli == 'N' %}
         <input type="radio" name="sukupuoli" value="Nainen" checked>
         Nainen
-        <input type="radio" name="sukupuoli" value="Mies" >
+        <input type="radio" name="sukupuoli" value="Mies" disabled>
         Mies
         {% else %}
-        <input type="radio" name="sukupuoli" value="Nainen" >
+        <input type="radio" name="sukupuoli" value="Nainen" disabled>
         Nainen
         <input type="radio" name="sukupuoli" value="Mies" checked>
         Mies
@@ -55,13 +42,13 @@
         <select name="paiva">
             {% for i in 1..31 %}
             {% if i < 10 %}
-            {% if i == attributes.paiva %}
+            {% if i == kayttaja.tulostaPaiva() %}
             <option value="0{{i}}" selected>0{{i}}</option>;
             {% else %}
             <option value="0{{i}}">0{{i}}</option>;
             {% endif %}
             {% else %}
-            {% if i == attributes.paiva %}
+            {% if i == kayttaja.tulostaPaiva() %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;
@@ -72,13 +59,13 @@
         <select name="kuukausi">
             {% for i in 1..12 %}
             {% if i < 10 %}
-            {% if i == attributes.kuukausi %}
+            {% if i == kayttaja.tulostaKuukausi() %}
             <option value="0{{i}}" selected>0{{i}}</option>;
             {% else %}
             <option value="0{{i}}">0{{i}}</option>;
             {% endif %}
             {% else %}
-            {% if i == attributes.kuukausi %}
+            {% if i == kayttaja.tulostaKuukausi() %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;
@@ -88,7 +75,7 @@
         </select>
         <select name="vuosi">
             {% for i in 1970..1996 %}
-            {% if i == attributes.vuosi %}
+            {% if i == kayttaja.tulostaSyntymavuosi() %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;
@@ -99,7 +86,7 @@
     </div>
     <div class="form-group">
         <label>Paikkakunta</label>
-        <input name="paikkakunta" class="form-control" value="{{attributes.paikkakunta}}" type="text" required>
+        <input name='paikkakunta' class="form-control" value="{{kayttaja.paikkakunta}}" type="text" required>
     </div>
     <div>
         <label>Lisää kuva</label> 
@@ -108,7 +95,7 @@
     </div>
     <div class="form-group">
         <label>Tietoja minusta</label>
-        <textarea name="omattiedot" class="form-control">{{attributes.omattiedot}}</textarea>
+        <textarea name='omattiedot' class="form-control">{{kayttaja.omattiedot}}</textarea>
     </div>
     <h3>Millaista seuraa haen</h3>
     <div class="form-group">
@@ -116,7 +103,7 @@
         <br>
         <select class="form-control" name="etsin">
             {% for tarkotus in tarkoitukset %}
-            {% if tarkotus.id == attributes.hakutarkoitusid %}
+            {% if tarkotus.id == kayttaja.hakutarkoitusid %}
             <option value="{{tarkotus.id}}" selected='selected'>{{tarkotus.nimi}}</option>
             {% else %}
             <option value="{{tarkotus.id}}">{{tarkotus.nimi}}</option>
@@ -124,11 +111,14 @@
             {% endfor %}
         </select>
     </div>
-    <br>
+    <h3>Tallenna muutokset salasanalla</h3>
+    <div class="form-group">
+        <label>Salasana</label>
+        <input class="form-control" type="password" required>
+    </div>
+
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Tallenna</button>
     </div>
 </form>
-
-
 {% endblock %}

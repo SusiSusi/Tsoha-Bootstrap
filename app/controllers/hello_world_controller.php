@@ -8,11 +8,18 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
-        $miisis = Hakutarkoitus::etsiHakutarkoitus(1);
-        $kayttajat = Hakutarkoitus::kaikkiHakutarkoitukset();
+//        $miisis = Hakutarkoitus::etsiHakutarkoitus(1);
+//        $kayttajat = Hakutarkoitus::kaikkiHakutarkoitukset();
+//
+//        Kint::dump($kayttajat);
+//        Kint::dump($miisis);
 
-        Kint::dump($kayttajat);
-        Kint::dump($miisis);
+        $doom = new Kayttaja(array(
+            'kayttajatunnus' => 'ko',
+        ));
+        $errors = $doom->errors();
+
+        Kint::dump($errors);
     }
 
     public static function login() {
