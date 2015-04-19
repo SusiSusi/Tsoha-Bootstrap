@@ -81,9 +81,39 @@ $routes->post('/:id/poistaTunnus', function($id) {
     KayttajaController::poista($id);
 });
 
+$routes->get('/saapuneetViestit/:id', function($id) {
+    ViestitController::kaikkiViestit($id);
+});
+
+$routes->get('/lahetetytViestit/:id', function($id) {
+    ViestitController::kaikkiLahetetytViestit($id);
+});
+
+$routes->post('/viestinSisalto/:id', function() {
+    ViestitController::lahetaViesti();
+});
+
+$routes->post('/julkinenProfiilisivu/:id', function() {
+    ViestitController::lahetaViesti();
+});
+
+$routes->get('/viestinSisalto/:id', function($id) {
+    ViestitController::lueViesti($id);
+});
+
+$routes->post('/saapuneetViestit/:id', function($id) {
+    ViestitController::poistaViesti($id);
+});
+
+$routes->post('/saapuneetViestit/:id', function($id) {
+    ViestitController::asetaLukemattomaksi($id);
+});
+
+$routes->post('/lahetetytViestit/:id', function($id) {
+    ViestitController::poistaViesti($id);
+});
+
 $routes->post('/logout', function() {
     UserController::logout();
 });
-//$routes->get('/julkinenProfiilisivu/:id', function($id) {
-//    HakutarkoitusController::naytaTarkoitus($id);
-//});
+

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% for tunnus in kayttajatunnus %}
+{% if tunnus.id == viesti.lahettajaid %}
+
+<h4>Viesti käyttäjältä {{tunnus.kayttajatunnus}}</h4>
+<h4>Viesti vastaanotettu klo {{viesti.viestinAika()}}, {{viesti.viestinPaiva()}}</h4>
+<br>
+
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">Aihe: {{viesti.aihe}}</h3>
+    </div>
+    <div class="panel-body">
+        {{viesti.sisalto}}
+    </div>
+</div>
+
+<br>
+
+<form method="post" action="{{base_path}}/viestinSisalto/{{viesti.id}}">
+    <div class="form-group">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Vastaa:</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Aihe: </label>
+                    <input name="aihe" class="form-control" value="RE: {{viesti.aihe}}" type="text">
+                </div>
+                <input name="viestiMuualta" value="0" type="hidden">
+                <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
+                <input name="vastaanottajaid" value="{{tunnus.id}}" type="hidden">
+                <input name="viestiid" value="{{viesti.id}}" type="hidden">
+                <textarea class="form-control" name="sisalto" required="required"></textarea>
+                <br>
+                <button type="submit" class="btn btn-primary">Lähetä</button>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{% endif %}
+{% endfor %}
+
+{% endblock %}

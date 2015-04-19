@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "macros/forms.html" as forms %}
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
+<h1>Saapuneet viestit</h1>
+<br>
+<table class="table table-striped table-bordered"  >
+    <thead>
+        <tr>
+            <th>Lähettäjä</th>
+            <th>Aihe</th>
+            <th>Saapunut</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for viesti in viestit %}
+         {% if viesti.luettu == false %}
+         <tr class="info">
+         {% else %}
+        <tr>
+         {% endif %}
+            {% for tunnus in kayttajatunnus %}
+            {% if tunnus.id == viesti.lahettajaid %}
+            <td><a href="{{base_path}}/julkinenProfiilisivu/{{tunnus.id}}">{{tunnus.kayttajatunnus}}</a></td>
+            {% endif %}
+            {% endfor %}
+            <td><a href="{{base_path}}/viestinSisalto/{{viesti.id}}">{{viesti.aihe}}</a></td>
+            <td>{{viesti.viestinAika()}} <br> {{viesti.viestinPaiva()}}</td>
+            <th>{{forms.poista_nappi("#{base_path}/saapuneetViestit/#{viesti.id}", 'Poista viesti', 'Oletko varma, että haluat poistaa viestin?')}}</th>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

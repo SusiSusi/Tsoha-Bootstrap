@@ -6,7 +6,9 @@ class KayttajaController extends BaseController {
         self::check_logged_in();
         $kayttajat = Kayttaja::kaikkiKayttajat();
         $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
-        View::make('kayttaja/kayttajienListaukset.html', array('kayttajat' => $kayttajat, 'tarkoitukset' => $tarkoitukset));
+        $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+        View::make('kayttaja/kayttajienListaukset.html', array('kayttajat' => $kayttajat,
+            'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat));
     }
 
 //    public static function tarkoitukset() {
@@ -15,7 +17,6 @@ class KayttajaController extends BaseController {
 //    }
 
     public static function store() {
-        ;
         $arvot = $_POST;
         $hakutarkoitus = $arvot['etsin'];
         $attributes = array(
@@ -49,28 +50,35 @@ class KayttajaController extends BaseController {
     }
 
     public static function etusivu() {
-        View::make('kayttaja/etusivu.html');
+        $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+        View::make('kayttaja/etusivu.html', array('maara' => $lukemattomat));
     }
 
     public static function nayta($id) {
         self::check_logged_in();
         $kayttaja = Kayttaja::etsi($id);
         $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
-        View::make('kayttaja/julkinenProfiilisivu.html', array('kayttaja' => $kayttaja, 'tarkoitukset' => $tarkoitukset));
+        $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+        View::make('kayttaja/julkinenProfiilisivu.html', array('kayttaja' => $kayttaja, 
+            'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat));
     }
 
     public static function naytaOmaSivu($id) {
         self::check_logged_in();
         $kayttaja = Kayttaja::etsi($id);
         $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
-        View::make('kayttaja/omaProfiilisivu.html', array('kayttaja' => $kayttaja, 'tarkoitukset' => $tarkoitukset));
+        $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+        View::make('kayttaja/omaProfiilisivu.html', array('kayttaja' => $kayttaja, 
+            'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat));
     }
 
     public static function edit($id) {
         self::check_logged_in();
         $kayttaja = Kayttaja::etsi($id);
         $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
-        View::make('kayttaja/muokkaa.html', array('kayttaja' => $kayttaja, 'tarkoitukset' => $tarkoitukset));
+        $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+        View::make('kayttaja/muokkaa.html', array('kayttaja' => $kayttaja, 
+            'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat));
     }
 
     public static function update($id) {
@@ -103,11 +111,19 @@ class KayttajaController extends BaseController {
         self::check_logged_in();
         $kayttaja = Kayttaja::etsi($id);
         $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
-        View::make('kayttaja/poistaTunnus.html', array('kayttaja' => $kayttaja, 'tarkoitukset' => $tarkoitukset));
+        $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+        View::make('kayttaja/poistaTunnus.html', array('kayttaja' => $kayttaja, 
+            'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat));
     }
 
     public static function poista($id) {
         self::check_logged_in();
+        $kaikkiSaapuneetViestit = Vastaanottaja::haeSaapuneetViestit($id);
+        $kaikkiLahetetytViestit = Viesti::etsiLahettajanViestit($id);
+        Vastaanottaja::poistaListanKaikkiKytkokset($kaikkiSaapuneetViestit);
+        Vastaanottaja::poistaListanKaikkiKytkokset($kaikkiLahetetytViestit);
+        Viesti::poistaListanKaikkiViestit($kaikkiLahetetytViestit); 
+        Viesti::poistaListanKaikkiViestit($kaikkiSaapuneetViestit); 
         $kayttaja = new Kayttaja(array('id' => $id));
         $kayttaja->poistaTunnus($id);
 //        Kint::dump($kayttaja);

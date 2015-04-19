@@ -18,14 +18,16 @@
 
     <tbody>
         {% for kayttaja in kayttajat %}
-        
+        {% if kayttaja.id != user_logged_in.id %}
         
         <tr>
+            
             {% if kayttaja.kuva != null %}
             <td><img src="{{kayttaja.kuva}}" class="img-rounded" alt="profiilikuva" style="width:64px;height:64px"></td>
             {% else %}
             <td>
             {% endif %}
+            
             <td><a href="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}">{{kayttaja.kayttajatunnus}}</a></td>
             <td>{{kayttaja.tulostaSyntymaVuosi()}}</td>
             <td>{{kayttaja.sukupuoli}}</td>
@@ -39,7 +41,7 @@
             <th><a class="btn btn-default btn-sm" href="#">Lähetä viesti</a></th>
         </tr>
        
-            
+           {% endif %}
         {% endfor %}
     </tbody>
 </table>

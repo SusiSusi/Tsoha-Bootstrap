@@ -18,24 +18,13 @@ hakutarkoitusID INTEGER REFERENCES Hakutarkoitus(id), -- viiteavain Hakutarkoitu
 oikeudet boolean -- true = pääkäyttäjä, false = peruskäyttäjä
 );
 
-CREATE TABLE JulkinenProfiilisivu(
-id SERIAL PRIMARY KEY, -- pääavain kokonaisluku
-kayttajaID INTEGER REFERENCES Kayttaja(id), -- viiteavain Kayttaja-tauluun
-sisalto varchar(900) NOT NULL -- sivun sisältö
-);
-
-CREATE TABLE SalainenSivu(
-id SERIAL PRIMARY KEY, -- pääavain kokonaisluku
-kayttajaID INTEGER REFERENCES Kayttaja(id), -- viiteavain Kayttaja-tauluun
-sisalto varchar(500) -- sivun sisältö
-);
-
 CREATE TABLE Kiinnostukset(
 id SERIAL PRIMARY KEY, -- pääavain kokonaisluku
 nimi varchar(100) -- kiinnostuksen nimi, esim. eläimet
 );
 
 CREATE TABLE Kohteet(
+id SERIAL PRIMARY KEY, -- pääavain kokonaisluku
 kayttajaID INTEGER REFERENCES Kayttaja(id), -- viiteavain Kayttaja-tauluun
 kiinnostusID INTEGER REFERENCES Kiinnostukset(id) -- viiteavain Kiinnostukset-tauluun
 );
@@ -44,11 +33,13 @@ CREATE TABLE Viesti(
 id SERIAL PRIMARY KEY, -- pääavain kokonaisluku
 aihe varchar(150), -- viestin aihe
 sisalto varchar(500), -- viestin sisältö
-aika DATE, -- milloin viesti on lähetetty
-luettu boolean -- true = luettu, false = lukematon
+aika TIMESTAMP, -- milloin viesti on lähetetty
+luettu boolean, -- true = luettu, false = lukematon
+lahettajaID INTEGER REFERENCES Kayttaja(id) -- viiteavain Kayttaja-tauluun
 );
 
 CREATE TABLE Vastaanottaja(
+id SERIAL PRIMARY KEY, -- pääavain kokonaisluku
 viestiID INTEGER REFERENCES Viesti(id), -- viiteavain Viesti-tauluun
 kayttajaID INTEGER REFERENCES Kayttaja(id) -- viiteavain Kayttaja-tauluun
 );
