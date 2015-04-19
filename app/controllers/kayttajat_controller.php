@@ -50,8 +50,12 @@ class KayttajaController extends BaseController {
     }
 
     public static function etusivu() {
-        $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
-        View::make('kayttaja/etusivu.html', array('maara' => $lukemattomat));
+        if (self::get_user_logged_in() != null) {
+            $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+            View::make('kayttaja/etusivu.html', array('maara' => $lukemattomat));
+        } else {
+            View::make('kayttaja/etusivu.html');
+        }
     }
 
     public static function nayta($id) {

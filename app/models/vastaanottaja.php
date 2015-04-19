@@ -63,9 +63,11 @@ class Vastaanottaja extends BaseModel {
     public static function lukemattomienMaara($kayttajaid) {
         $viestit = Vastaanottaja::haeSaapuneetViestit($kayttajaid->id);
         $lukemattomat = 0;
-        foreach ($viestit as $viestit) {
-            if ($viestit->viestinTila() == FALSE) {
-                $lukemattomat++;
+        if ($viestit) {
+            foreach ($viestit as $viestit) {
+                if ($viestit->viestinTila() == FALSE) {
+                    $lukemattomat++;
+                }
             }
         }
         return $lukemattomat;

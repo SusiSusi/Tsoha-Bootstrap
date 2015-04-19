@@ -25,10 +25,11 @@ class ViestitController extends BaseController {
         self::check_logged_in();
         $viesti = Viesti::etsiViesti($id);
         $viesti->viestiLuettu($id);
+        $vastaanottaja = Vastaanottaja::etsiViestinVastaanottaja($id);
         $kayttajatunnus = Kayttaja::kaikkiKayttajat();
         $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
         View::make('viestit/viestinSisalto.html', array('viesti' => $viesti,
-            'kayttajatunnus' => $kayttajatunnus, 'maara' => $lukemattomat));
+            'kayttajatunnus' => $kayttajatunnus, 'maara' => $lukemattomat, 'vastaanottaja' => $vastaanottaja));
     }
 
     public static function lahetaViesti() {

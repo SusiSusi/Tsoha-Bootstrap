@@ -3,19 +3,60 @@
 
 {% for tunnus in kayttajatunnus %}
 {% if tunnus.id == viesti.lahettajaid %}
+{% if viesti.lahettajaid == user_logged_in.id %}
+{% for tunnari in kayttajatunnus %}
+{% if tunnari.id == vastaanottaja.kayttajaid %}
 
-<h4>Viesti käyttäjältä {{tunnus.kayttajatunnus}}</h4>
-<h4>Viesti vastaanotettu klo {{viesti.viestinAika()}}, {{viesti.viestinPaiva()}}</h4>
+<h3>Keskustelu käyttäjän <a href="{{base_path}}/julkinenProfiilisivu/{{tunnari.id}}">{{tunnari.kayttajatunnus}}</a> kanssa</h3>
 <br>
-
-<div class="panel panel-warning">
+{% endif %}
+{% endfor %}
+<div class="panel panel-info">
     <div class="panel-heading">
-        <h3 class="panel-title">Aihe: {{viesti.aihe}}</h3>
+        <h3 class="panel-title">Sinä: <br> <small>Lähetetty: {{viesti.viestinAika()}}, {{viesti.viestinPaiva()}}</small></h3>
     </div>
     <div class="panel-body">
-        {{viesti.sisalto}}
+        <strong>Aihe: {{viesti.aihe}}</strong> <br><br> {{viesti.sisalto}}
     </div>
 </div>
+
+<form method="post" action="{{base_path}}/viestinSisalto/{{viesti.id}}">
+    <div class="form-group">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Lähetä uusi viesti</h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label>Aihe: </label>
+                    <input name="aihe" class="form-control" value="RE: {{viesti.aihe}}" type="text">
+                </div>
+                <input name="viestiMuualta" value="0" type="hidden">
+                <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
+                <input name="vastaanottajaid" value="{{tunnari.id}}" type="hidden">
+                <input name="viestiid" value="{{viesti.id}}" type="hidden">
+                <textarea class="form-control" name="sisalto" required="required"></textarea>
+                <br>
+                <button type="submit" class="btn btn-primary">Lähetä</button>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+{% else %}
+<h3>Keskustelu käyttäjän <a href="{{base_path}}/julkinenProfiilisivu/{{tunnus.id}}">{{tunnus.kayttajatunnus}}</a> kanssa</h3>
+<br>
+<div class="panel panel-warning">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{tunnus.kayttajatunnus}}: <br> <small>Vastaanotettu: {{viesti.viestinAika()}}, {{viesti.viestinPaiva()}}</small></h3>
+    </div>
+    <div class="panel-body">
+        <strong>Aihe: {{viesti.aihe}}</strong> <br><br> {{viesti.sisalto}}
+    </div>
+</div>
+
+
 
 <br>
 
@@ -42,7 +83,7 @@
 
     </div>
 </form>
-
+{% endif %}
 {% endif %}
 {% endfor %}
 
