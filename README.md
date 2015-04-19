@@ -14,10 +14,8 @@ Kuvauksesta hiukan poiketen, järjestelmää ei luoda PariTELE Oy:lle. Järjeste
 ###Testitunnuksia
 Käyttäjätunnus | Salasana
 ---------------|---------
-Mollyska|MONIA23
+Misuliina|Miisa3
 Salamanteri|Saku1
-Togle|togle
-PitkäKana|tipu
 
 ### Linkit suunnittelusivuille
 * [Etusivu](http://susisusi.users.cs.helsinki.fi/tsoha2015//etusivu)
