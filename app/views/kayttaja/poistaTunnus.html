@@ -2,6 +2,14 @@
 {% block content %}
 {% import "macros/forms.html" as forms %}
 
+{% if errors %}
+<div class="alert alert-danger">
+    <ul>
+        <li>{{errors}}</li>
+    </ul>
+</div>
+{% endif %}
+
 {% if user_logged_in %}
 <h1>Poista profiili {{user_logged_in.kayttajatunnus}}</h1>
 {% endif %}
@@ -41,11 +49,13 @@
         Hyväksy käyttäjätunnuksen poisto syöttämällä salasana.
         <br>
         <br>
+        <form method="post" action="{{base_path}}/{{kayttaja.id}}/poistaTunnus">
         <div class="form-group">
             <label>Salasana</label>
-            <input class="form-control" type="password" required>
+            <input name="salasana" class="form-control" type="password" required>
         </div>
         {{forms.poista_nappi("#{base_path}/#{kayttaja.id}/poistaTunnus",'Poista tunnus', 'Oletko nyt aivan varma, että haluat poistaa käyttäjätunnuksesi?')}}
+        </form>
     </div>
 </div>
 

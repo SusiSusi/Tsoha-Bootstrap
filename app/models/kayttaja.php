@@ -7,25 +7,17 @@ class Kayttaja extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array(BaseModel::onkoKayttajatunnusVapaana($this->kayttajatunnus), 
-            BaseModel::validate_string_length($this->kayttajatunnus, 6, 20)
-        );
+        $this->validators = array('onkoKayttajatunnusVapaana', 'validateKayttajatunnus');
     }
 
     public function getKayttajatunnus() {
         return $this->kayttajatunnus;
     }
-    
+
     public function getKuva() {
         $kuva = asset($this->kuva);
         return $kuva;
     }
-
-//    public function getHakutarkoitusNimi() {
-//      $ti = Hakutarkoitus::etsiHakutarkoitus($this->hakutarkoitusid);
-//               
-//      return $ti.nimi;
-//    }
 
     public function getSukupuoli() {
         if ($this->sukupuoli === 'N') {
@@ -55,6 +47,44 @@ class Kayttaja extends BaseModel {
         return $kirjaus;
     }
 
+    public function validateKayttajatunnus() {
+        $errors = array();
+        if (!$this->validatePieninPituus($this->kayttajatunnus, 4)) {
+            $errors[] = 'Käyttäjätunnuksen pituuden tulee olla vähintään kuusi merkkiä pitkä';
+        }
+        if (!$this->validateSuurinPituus($this->kayttajatunnus, 20)) {
+            $errors[] = 'Käyttäjätunnuksen pituus saa olla enintään 20 merkkiä pitkä';
+        }
+        return $errors;
+    }
+
+    public function onkoKayttajatunnusVapaana() {
+        $errors = array();
+        $kysely = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE kayttajatunnus = :kayttajatunnus LIMIT 1');
+        $kysely->execute(array('kayttajatunnus' => $this->kayttajatunnus));
+        $rivi = $kysely->fetch();
+
+        if ($rivi) {
+            $errors[] = 'Käyttäjätunnus ' . $this->kayttajatunnus . ' on jo käytössä. Valitse joku muu.';
+        }
+        return $errors;
+    }
+
+    public function salasananVarmistusKirjoitettuOikein($salasana, $salasana2) {
+        if (!$this->kaksiSanaaTarkoittaaSamaa($salasana, $salasana2)) {
+            return false;
+        }
+        return true;
+    }
+
+    public function validateSalasana() {
+        $errors = array();
+        if (!$this->validatePieninPituus($this->salasana, 6)) {
+            $errors[] = 'Salasanan pituuden tulee olla vähintään kuusi merkkiä pitkä';
+        }
+        return $errors;
+    }
+
     public function talleta() {
         $kysely = DB::connection()->prepare('INSERT INTO Kayttaja (kayttajatunnus, nimi,
                 salasana, syntymaaika, sukupuoli, paikkakunta, omattiedot, hakutarkoitusid,
@@ -65,7 +95,7 @@ class Kayttaja extends BaseModel {
             'salasana' => $this->salasana, 'syntymaaika' => $this->syntymaaika,
             'sukupuoli' => $this->sukupuoli, 'paikkakunta' => $this->paikkakunta,
             'omattiedot' => $this->omattiedot, 'hakutarkoitusid' => $this->hakutarkoitusid,
-            'kuva' => $this->kuva, 'oikeudet' => $this->oikeudet));
+            'kuva' => $this->kuva, 'oikeudet' => 'false'));
         $rivi = $kysely->fetch();
 //        Kint::trace();
 //        Kint::dump($rivi);

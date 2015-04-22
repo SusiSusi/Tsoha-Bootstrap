@@ -39,14 +39,14 @@
         <input type="radio" name="sukupuoli" value="M" required>
         Mies
         {% elseif attributes.sukupuoli == 'N' %}
-        <input type="radio" name="sukupuoli" value="Nainen" checked>
+        <input type="radio" name="sukupuoli" value="N" checked>
         Nainen
-        <input type="radio" name="sukupuoli" value="Mies" >
+        <input type="radio" name="sukupuoli" value="M" >
         Mies
         {% else %}
-        <input type="radio" name="sukupuoli" value="Nainen" >
+        <input type="radio" name="sukupuoli" value="N" >
         Nainen
-        <input type="radio" name="sukupuoli" value="Mies" checked>
+        <input type="radio" name="sukupuoli" value="M" checked>
         Mies
         {% endif %}
     </div>
@@ -55,13 +55,13 @@
         <select name="paiva">
             {% for i in 1..31 %}
             {% if i < 10 %}
-            {% if i == attributes.paiva %}
+            {% if i == synttarit.paiva %}
             <option value="0{{i}}" selected>0{{i}}</option>;
             {% else %}
             <option value="0{{i}}">0{{i}}</option>;
             {% endif %}
             {% else %}
-            {% if i == attributes.paiva %}
+            {% if i == synttarit.paiva %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;
@@ -72,13 +72,13 @@
         <select name="kuukausi">
             {% for i in 1..12 %}
             {% if i < 10 %}
-            {% if i == attributes.kuukausi %}
+            {% if i == synttarit.kuukausi %}
             <option value="0{{i}}" selected>0{{i}}</option>;
             {% else %}
             <option value="0{{i}}">0{{i}}</option>;
             {% endif %}
             {% else %}
-            {% if i == attributes.kuukausi %}
+            {% if i == synttarit.kuukausi %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;
@@ -88,7 +88,7 @@
         </select>
         <select name="vuosi">
             {% for i in 1970..1996 %}
-            {% if i == attributes.vuosi %}
+            {% if i == synttarit.vuosi %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;

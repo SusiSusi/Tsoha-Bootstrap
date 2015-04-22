@@ -5,9 +5,7 @@
 {% if errors %}
 <div class="alert alert-danger">
     <ul>
-        {% for error in errors %}
-        <li>{{error}}</li>
-        {% endfor %}
+        <li>{{errors}}</li>
     </ul>
 </div>
 {% endif %}
@@ -19,7 +17,8 @@
 <form method="post" action="{{base_path}}/{{kayttaja.id}}/muokkaa">
     <div class="form-group">
         <label>Käyttäjätunnus</label>
-        <input name='kayttajatunnus' class="form-control" value="{{kayttaja.kayttajatunnus}}" type="text" disabled="disabled">
+        <input class="form-control" value="{{kayttaja.kayttajatunnus}}" type="text" disabled="disabled">
+        <input name="kayttajatunnus" value="{{kayttaja.kayttajatunnus}}" type="hidden">
     </div>
     <div class="form-group">
         <label>Nimi</label>
@@ -29,14 +28,14 @@
         <label>Sukupuoli</label>
         <br>
         {% if kayttaja.sukupuoli == 'N' %}
-        <input type="radio" name="sukupuoli" value="Nainen" checked>
+        <input type="radio" name="sukupuoli" value="N" checked>
         Nainen
-        <input type="radio" name="sukupuoli" value="Mies" disabled>
+        <input type="radio" name="sukupuoli" value="M" disabled>
         Mies
         {% else %}
-        <input type="radio" name="sukupuoli" value="Nainen" disabled>
+        <input type="radio" name="sukupuoli" value="N" disabled>
         Nainen
-        <input type="radio" name="sukupuoli" value="Mies" checked>
+        <input type="radio" name="sukupuoli" value="M" checked>
         Mies
         {% endif %}
     </div>
@@ -45,13 +44,13 @@
         <select name="paiva">
             {% for i in 1..31 %}
             {% if i < 10 %}
-            {% if i == kayttaja.tulostaPaiva() %}
+            {% if i == user_logged_in.tulostaPaiva() %}
             <option value="0{{i}}" selected>0{{i}}</option>;
             {% else %}
             <option value="0{{i}}">0{{i}}</option>;
             {% endif %}
             {% else %}
-            {% if i == kayttaja.tulostaPaiva() %}
+            {% if i == user_logged_in.tulostaPaiva() %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;
@@ -62,13 +61,13 @@
         <select name="kuukausi">
             {% for i in 1..12 %}
             {% if i < 10 %}
-            {% if i == kayttaja.tulostaKuukausi() %}
+            {% if i == user_logged_in.tulostaKuukausi() %}
             <option value="0{{i}}" selected>0{{i}}</option>;
             {% else %}
             <option value="0{{i}}">0{{i}}</option>;
             {% endif %}
             {% else %}
-            {% if i == kayttaja.tulostaKuukausi() %}
+            {% if i == user_logged_in.tulostaKuukausi() %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;
@@ -78,7 +77,7 @@
         </select>
         <select name="vuosi">
             {% for i in 1970..1996 %}
-            {% if i == kayttaja.tulostaSyntymavuosi() %}
+            {% if i == user_logged_in.tulostaSyntymavuosi() %}
             <option value="{{i}}" selected>{{i}}</option>;
             {% else %}
             <option value="{{i}}">{{i}}</option>;

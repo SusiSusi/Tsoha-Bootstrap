@@ -56,7 +56,6 @@ $routes->get('/rekisterointi', function() {
     KayttajaController::luo();
 });
 
-
 $routes->get('/julkinenProfiilisivu/:id', function($id) {
     KayttajaController::nayta($id);
 });

@@ -22,38 +22,57 @@ class BaseModel {
 
         foreach ($this->validators as $validator) {
             // Kutsu validointimetodia tässä ja lisää sen palauttamat virheet errors-taulukkoon
-            $errors = array_merge($errors, $validator);
+            $errors = array_merge($errors, $this->{$validator}());
         }
 
         return $errors;
     }
 
-    public function validate_string_length($sana, $minPituus, $maxPituus) {
-        $errors = array();
-        if ($sana == '' || $sana == null) {
-            $errors[] = 'Nimi ei saa olla tyhjä!';
-        }
+    public function validatePieninPituus($sana, $minPituus) {
         if (strlen($sana) < $minPituus) {
-            $errors[] = 'Käyttäjätunnuksen pituuden tulee olla vähintään ' . $minPituus . ' merkkiä pitkä';
+            return false;
         }
-        if ($maxPituus != -1) {
-            if (strlen($sana) > $maxPituus) {
-                $errors[] = 'Käyttäjätunnuksen pituus saa olla enintään ' . $maxPituus . ' merkkiä pitkä';
-            }
-        }
-        return $errors;
+        return true;
     }
 
-    public function onkoKayttajatunnusVapaana($kayttajatunnus) {
-        $errors = array();
-        $kysely = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE kayttajatunnus = :kayttajatunnus LIMIT 1');
-        $kysely->execute(array('kayttajatunnus' => $kayttajatunnus));
-        $rivi = $kysely->fetch();
-
-        if ($rivi) {
-            $errors[] = 'Käyttäjätunnus ' . $kayttajatunnus . ' on jo käytössä. Valitse joku muu.';
+    public function validateSuurinPituus($sana, $maxPituus) {
+        if (strlen($sana) > $maxPituus) {
+            return false;
         }
-        return $errors;
+        return true;
     }
 
+    public function kaksiSanaaTarkoittaaSamaa($sana1, $sana2) {
+        if ($sana1 != $sana2) {
+            return false;
+        }
+        return true;
+    }
+
+//    public function validate_string_length($sana, $minPituus, $maxPituus) {
+//        $errors = array();
+//        if ($sana == '' || $sana == null) {
+//            $errors[] = 'Nimi ei saa olla tyhjä!';
+//        }
+//        if (strlen($sana) < $minPituus) {
+//            $errors[] = 'Käyttäjätunnuksen pituuden tulee olla vähintään ' . $minPituus . ' merkkiä pitkä';
+//        }
+//        if ($maxPituus != -1) {
+//            if (strlen($sana) > $maxPituus) {
+//                $errors[] = 'Käyttäjätunnuksen pituus saa olla enintään ' . $maxPituus . ' merkkiä pitkä';
+//            }
+//        }
+//        return $errors;
+//    }
+//    public function onkoKayttajatunnusVapaana($kayttajatunnus) {
+//        $errors = array();
+//        $kysely = DB::connection()->prepare('SELECT * FROM Kayttaja WHERE kayttajatunnus = :kayttajatunnus LIMIT 1');
+//        $kysely->execute(array('kayttajatunnus' => $kayttajatunnus));
+//        $rivi = $kysely->fetch();
+//
+//        if ($rivi) {
+//            $errors[] = 'Käyttäjätunnus ' . $kayttajatunnus . ' on jo käytössä. Valitse joku muu.';
+//        }
+//        return $errors;
+//    }
 }
