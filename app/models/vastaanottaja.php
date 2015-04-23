@@ -88,4 +88,23 @@ class Vastaanottaja extends BaseModel {
         }
     }
 
+    public static function kaikkiViestitKayttajanKanssa($kayttaja1, $kayttaja2) {
+        $kysely = DB::connection()->prepare('SELECT distinct Viesti.id, Viesti.aihe, Viesti.sisalto,
+                Viesti.aika, Viesti.luettu, Viesti.lahettajaid, Vastaanottaja.kayttajaid AS vastot
+                FROM Viesti, Vastaanottaja WHERE
+                lahettajaid = :lahettajaid and 
+                kayttajaid = :kayttajaid');
+        $kysely->execute(array('lahettajaid' => $kayttaja1, 'kayttajaid' => $kayttaja2));
+        $rivit = $kysely->fetchAll();
+//        Kint::dump($kayttaja1);
+//        Kint::dump($kayttaja2);
+//        Kint::dump($rivit);
+        
+        $viestit = array();
+        foreach ($rivit as $rivi) {
+            $viestit[] = $rivi;
+        }
+//        Kint::dump($viestit);
+        return $viestit;
+    }
 }

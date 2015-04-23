@@ -107,23 +107,50 @@ class Kayttaja extends BaseModel {
         $kysely->execute();
         $rivit = $kysely->fetchAll();
         $kayttajat = array();
-
         foreach ($rivit as $rivi) {
-            $kayttajat[] = new Kayttaja(array(
-                'id' => $rivi['id'],
-                'kayttajatunnus' => $rivi['kayttajatunnus'],
-                'nimi' => $rivi['nimi'],
-                'salasana' => $rivi['salasana'],
-                'syntymaaika' => $rivi['syntymaaika'],
-                'sukupuoli' => $rivi['sukupuoli'],
-                'paikkakunta' => $rivi['paikkakunta'],
-                'omattiedot' => $rivi['omattiedot'],
-                'kuva' => $rivi['kuva'],
-                'hakutarkoitusid' => $rivi['hakutarkoitusid'],
-                'oikeudet' => $rivi['oikeudet']
-            ));
+            $kayttajat[] = new Kayttaja($rivi);
         }
+        return $kayttajat;
+    }
 
+    public static function kaikkiKayttajatHaulla($options) {
+        $kyselyHakusanalla = 'SELECT distinct * FROM Kayttaja';
+        $vaihtoehdot = array();
+        if (isset($options)) {
+            if ($options['sukupuoli'] == 'E') {
+                $options['sukupuoli'] = '';
+            }
+            if ($options['hakutarkoitus'] == -1) {
+                $kyselyHakusanalla .= ' WHERE kayttajatunnus LIKE :tunnus AND sukupuoli LIKE :puoli
+                     AND syntymaaika BETWEEN :vuosi1 AND :vuosi2 AND paikkakunta LIKE :kunta
+                     AND hakutarkoitusid BETWEEN :minArvo AND :maxArvo';
+                $vaihtoehdot['minArvo'] = Hakutarkoitus::pieninHakutarkoitusId();
+                $vaihtoehdot['maxArvo'] = Hakutarkoitus::suurinHakutarkoitusId();
+            } else {
+                $kyselyHakusanalla .= ' WHERE kayttajatunnus LIKE :tunnus AND sukupuoli LIKE :puoli
+                     AND syntymaaika BETWEEN :vuosi1 AND :vuosi2 AND paikkakunta LIKE :kunta
+                     AND hakutarkoitusid = :tarkoitus';
+                $vaihtoehdot['tarkoitus'] = $options['hakutarkoitus'];
+            }
+            $vaihtoehdot['tunnus'] = '%' . $options['kayttajatunnus'] . '%';
+            $vaihtoehdot['puoli'] = '%' . $options['sukupuoli'] . '%';
+            $vaihtoehdot['vuosi1'] = '01.01.' . $options['vuosi1'];
+            $vaihtoehdot['vuosi2'] = '31.12.' . $options['vuosi2'];
+            $vaihtoehdot['kunta'] = '%' . $options['paikkakunta'] . '%';
+        }
+//        Kint::dump($options);
+        $kyselyHakusanalla .= ' ORDER BY kayttajatunnus';
+        $kysely = DB::connection()->prepare($kyselyHakusanalla);
+        if ($options == null) {
+            $kysely->execute();
+        } else {
+            $kysely->execute($vaihtoehdot);
+        }
+        $rivit = $kysely->fetchAll();
+        $kayttajat = array();
+        foreach ($rivit as $rivi) {
+            $kayttajat[] = new Kayttaja($rivi);
+        }
         return $kayttajat;
     }
 

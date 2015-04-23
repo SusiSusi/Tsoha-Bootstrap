@@ -44,6 +44,10 @@ $routes->get('/kayttajienListaukset', function() {
     KayttajaController::index();
 });
 
+$routes->get('/haku', function() {
+    KayttajaController::haku();
+});
+
 //$routes->get('/rekisterointi', function() {
 //    KayttajaController::tarkoitukset();
 //});

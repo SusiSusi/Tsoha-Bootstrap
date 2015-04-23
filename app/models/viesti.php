@@ -40,7 +40,6 @@ class Viesti extends BaseModel {
                 'lahettajaID' => $rivi['lahettajaID']
             ));
         }
-
         return $viestit;
     }
 
@@ -123,11 +122,31 @@ class Viesti extends BaseModel {
         return $onkoLuettu;
     }
 
+    public function viestinLahettaja() {
+        return $this->lahettajaid;
+    }
+
     public function tallennaViesti() {
         $kysely = DB::connection()->prepare('INSERT INTO Viesti (aihe, sisalto, aika, luettu, 
                 lahettajaid) VALUES (:aihe, :sisalto, :aika, :luettu, :lahettajaid) RETURNING id');
         $kysely->execute(array('aihe' => $this->aihe, 'sisalto' => $this->sisalto,
             'aika' => $this->aika, 'luettu' => 'false', 'lahettajaid' => $this->lahettajaid));
+        $rivi = $kysely->fetch();
+//        Kint::trace();
+//        Kint::dump($rivi);
+        $this->id = $rivi['id'];
+    }
+
+    public function muokkaa($id) {
+        $kysely = DB::connection()->prepare('UPDATE Viesti
+                SET aihe = :aihe, sisalto = :sisalto,  
+                aika = :aika, luettu = :luettu, 
+                lahettajaid = :lahettajaid
+                WHERE id = :id RETURNING id');
+        $kysely->execute(array('id' => $id, 'aihe' => $this->aihe,
+            'sisalto' => $this->sisalto,
+            'aika' => $this->aika,
+            'luettu' => 'false', 'lahettajaid' => $this->lahettajaid));
         $rivi = $kysely->fetch();
 //        Kint::trace();
 //        Kint::dump($rivi);

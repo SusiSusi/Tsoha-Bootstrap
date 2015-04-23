@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
+<br>
+
+<form method="get" action="" class="form-inline">
+    <div class="panel panel-info">
+        <div class="panel-heading"> 
+            <h3 class="panel-title">Hae käyttäjiä </h3>
+        </div>
+        <div class="panel-body">
+            <div class="form group">
+                <label>Käyttäjätunnus</label>
+                <br>
+                <input name="kayttajatunnus" class="form-control" placeholder="Hakusana" type="text">
+            </div>
+            <div class="form-group">
+                <label>Syntymävuosi</label>
+                <br>
+                <select name="vuosi1">
+                    {% for i in 1970..1996 %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endfor %}
+                </select>
+                -
+                <select name="vuosi2">
+                    {% for i in 1970..1996 %}
+                    {% if i == 1996 %}
+                    <option value="{{i}}" selected="selected">{{i}}</option>
+                    {% else %}
+                    <option value="{{i}}">{{i}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form group">
+                <label>Sukupuoli</label>
+                <br>
+                <input type="radio" name="sukupuoli" value="N">
+                Nainen
+                <input type="radio" name="sukupuoli" value="M" >
+                Mies 
+                <input type="radio" name="sukupuoli" value="E" checked="checked" >
+                Molemmat 
+            </div>
+            <div class="form group">
+                <label>Paikkakunta</label>
+                <br>
+                <input name="paikkakunta" class="form-control" placeholder="Paikkakunta" type="text">
+            </div>
+            <div class="form-group">
+                <label>Hakutarkoitus</label>
+                <br>
+                <select class="form-control" name="hakutarkoitus">
+                    <option value="-1">--Ei valittu--</option>
+                    {% for tarkotus in tarkoitukset %}
+                    <option value="{{tarkotus.id}}">{{tarkotus.nimi}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <br>
+            <button type="submit" class="btn btn-info">Hae</button>
+        </div>
+    </div>
+</form>
+
+{% if kayttajat and kayttajat != 'EnsimmainenKerta' %}
+<table class="table table-striped table-bordered"  >
+    <thead>
+        <tr>
+            <th>Käyttäjätunnus</th>
+            <th>Syntymävuosi</th>
+            <th>Sukupuoli</th>
+            <th>Paikkakunta</th>
+            <th>Tietoja minusta</th>
+            <th>Mitä haen</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for kayttaja in kayttajat %}
+        <tr>
+            {% if kayttaja.id == user_logged_in.id %}
+            <td><a href="{{base_path}}/omaProfiilisivu/{{kayttaja.id}}">{{kayttaja.kayttajatunnus}}</a></td>
+            {% else %}
+            <td><a href="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}">{{kayttaja.kayttajatunnus}}</a></td>
+            {% endif %}
+            <td>{{kayttaja.tulostaSyntymaVuosi()}}</td>
+            <td>{{kayttaja.sukupuoli}}</td>
+            <td>{{kayttaja.paikkakunta}}</td>
+            <td>{{kayttaja.omattiedot}}</td>
+            {% for tarkotus in tarkoitukset %}
+            {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+            <td>{{tarkotus.nimi}}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
+{% endblock %}

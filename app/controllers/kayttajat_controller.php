@@ -4,17 +4,50 @@ class KayttajaController extends BaseController {
 
     public static function index() {
         self::check_logged_in();
-        $kayttajat = Kayttaja::kaikkiKayttajat();
+        $arvot = $_GET;
+        $options = array();
+        if (isset($arvot['search'])) {
+            $options['search'] = $arvot['search'];
+            $kayttajat = Kayttaja::kaikkiKayttajat($options);
+        } else {
+            $kayttajat = Kayttaja::kaikkiKayttajat(null);
+        }
+
         $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
         $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
         View::make('kayttaja/kayttajienListaukset.html', array('kayttajat' => $kayttajat,
             'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat));
     }
 
-//    public static function tarkoitukset() {
-//        $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
-//        View::make('kayttaja/rekisterointi.html', array('tarkoitukset' => $tarkoitukset));
-//    }
+    public static function haku() {
+        self::check_logged_in();
+        $arvot = $_GET;
+        $options = array();
+//        Kint::dump($arvot);
+        if (isset($arvot['kayttajatunnus'])) {
+            $options['kayttajatunnus'] = $arvot['kayttajatunnus'];
+            $options['vuosi1'] = $arvot['vuosi1'];
+            $options['vuosi2'] = $arvot['vuosi2'];
+            $options['sukupuoli'] = $arvot['sukupuoli'];
+            $options['paikkakunta'] = $arvot['paikkakunta'];
+            $options['hakutarkoitus'] = $arvot['hakutarkoitus'];
+            $kayttajat = Kayttaja::kaikkiKayttajatHaulla($options);
+        } else {
+            $kayttajat = 'EnsimmainenKerta';
+        }
+        if (empty($kayttajat)) {
+            $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
+            $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+            View::make('kayttaja/haku.html', array('kayttajat' => $kayttajat,
+                'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat,
+                'message' => 'Hakuehdoilla ei löytynyt käyttäjiä!'));
+        } else {
+            $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
+            $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+            View::make('kayttaja/haku.html', array('kayttajat' => $kayttajat,
+                'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat));
+        }
+    }
 
     public static function store() {
         $arvot = $_POST;
@@ -118,13 +151,13 @@ class KayttajaController extends BaseController {
         if (!$kayttaja->kaksiSanaaTarkoittaaSamaa($kayttajaAlkuperainen->salasana, $arvot['salasana'])) {
             $error = "Väärä salasana. Anna salasana uudelleen.";
         }
-        if (!empty($error)) {            
+        if (!empty($error)) {
             $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
             View::make('kayttaja/muokkaa.html', array('errors' => $error, 'tarkoitukset' => $tarkoitukset,
                 'kayttaja' => $attributes));
         } else {
-        $kayttaja->muokkaa($id);
-        Redirect::to('/omaProfiilisivu/' . $kayttaja->id, array('message' => 'Profiilisivun muokkaus onnistui!'));
+            $kayttaja->muokkaa($id);
+            Redirect::to('/omaProfiilisivu/' . $kayttaja->id, array('message' => 'Profiilisivun muokkaus onnistui!'));
         }
     }
 

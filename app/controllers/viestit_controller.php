@@ -24,12 +24,26 @@ class ViestitController extends BaseController {
     public static function lueViesti($id) {
         self::check_logged_in();
         $viesti = Viesti::etsiViesti($id);
-        $viesti->viestiLuettu($id);
-        $vastaanottaja = Vastaanottaja::etsiViestinVastaanottaja($id);
+        $vastaanottajanid = Vastaanottaja::etsiViestinVastaanottaja($id);
+        if ($vastaanottajanid[1] == self::get_user_logged_in()->id) {
+            $viesti->viestiLuettu($id);
+        }
+        $vastaanottaja = Kayttaja::etsi($vastaanottajanid[1]);
+        $lahettaja = Kayttaja::etsi($viesti->lahettajaid);
+        $kaikkiViestit = Vastaanottaja::kaikkiViestitKayttajanKanssa(self::get_user_logged_in()->id, $lahettaja->id);
+        $kaikkiViestitToisinpain = Vastaanottaja::kaikkiViestitKayttajanKanssa($lahettaja->id, self::get_user_logged_in()->id);
+        if ($kaikkiViestitToisinpain) {
+            foreach ($kaikkiViestitToisinpain as $viestini) {
+                array_push($kaikkiViestit, $viestini);
+            }
+        }
+
+//       Kint::dump($kaikkiViestit);
         $kayttajatunnus = Kayttaja::kaikkiKayttajat();
         $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
-        View::make('viestit/viestinSisalto.html', array('viesti' => $viesti,
-            'kayttajatunnus' => $kayttajatunnus, 'maara' => $lukemattomat, 'vastaanottaja' => $vastaanottaja));
+        View::make('viestit/viestinSisalto.html', array('viesti' => $viesti, 'kaikkiViestit' => $kaikkiViestit,
+            'kayttajatunnus' => $kayttajatunnus, 'maara' => $lukemattomat, 'vastaanottaja' => $vastaanottaja,
+            'lahettaja' => $lahettaja));
     }
 
     public static function lahetaViesti() {
@@ -54,6 +68,28 @@ class ViestitController extends BaseController {
             Redirect::to('/saapuneetViestit/' . self::get_user_logged_in()->id, array('message' => 'Viesti lähetetty!'));
         }
     }
+//
+//    public static function muokkaaViestia($id) {
+//        self::check_logged_in();
+//        $arvot = $_POST;
+//
+//        $attributes = array(
+//            'id' => $id,
+//            'aihe' => $arvot['aihe'],
+//            'sisalto' => $arvot['viestinSisalto'] . \n . $arvot['viestinAika'] . \n . $arvot['aikaisempiSisalto']
+//                . \n . $arvot['sisalto'],
+//            'aika' => date('Y-m-d H:i:s', strtotime('now')),
+//            'lahettajaid' => $arvot['lahettajaid']
+//        );
+//        Kint::dump($attributes);
+//        $viesti = new Viesti($attributes);
+////        $viesti->muokkaa($id);
+//        Kint::dump($viesti);
+//        $vastaanottaja = new Vastaanottaja($viesti->id, $arvot['vastaanottajaid']);
+//        Kint::dump($vastaanottaja);
+////        $vastaanottaja->yhdistaViestiKayttajaan();
+//        
+//    }
 
     public static function poistaViesti($id) {
         self::check_logged_in();
@@ -68,4 +104,9 @@ class ViestitController extends BaseController {
         Viesti::asetaViestiLukemattomaksi($id);
         Redirect::to('/saapuneetViestit/' . self::get_user_logged_in()->id);
     }
+
+    public static function kokoKeskusteluKayttajanKanssa($kayttaja2) {
+        $viestit = Vastaanottaja::kaikkiViestitKayttajanKanssa(self::get_user_logged_in()->id, $kayttaja2);
+    }
+
 }
