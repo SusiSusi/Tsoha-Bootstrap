@@ -29,15 +29,15 @@
             <div class="form-group">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                    {% if viesti.lahettajaid == user_logged_in.id %}
-                    <h3 class="panel-title">Lähetä uusi viesti</h3>
-                    <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
-                    <input name="vastaanottajaid" value="{{vastaanottaja.id}}" type="hidden">
-                    {% else %}
-                    <h3 class="panel-title">Vastaa:</h3>
-                    <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
-                    <input name="vastaanottajaid" value="{{lahettaja.id}}" type="hidden">
-                    {% endif %}
+                        {% if viesti.lahettajaid == user_logged_in.id %}
+                        <h3 class="panel-title">Lähetä uusi viesti</h3>
+                        <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
+                        <input name="vastaanottajaid" value="{{vastaanottaja.id}}" type="hidden">
+                        {% else %}
+                        <h3 class="panel-title">Vastaa:</h3>
+                        <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
+                        <input name="vastaanottajaid" value="{{lahettaja.id}}" type="hidden">
+                        {% endif %}
                     </div>
                     <div class="panel-body">
                         <div class="form-group">

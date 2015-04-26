@@ -10,6 +10,9 @@
 
 <h1>Saapuneet viestit</h1>
 <br>
+
+{% if viestit %}
+
 <table class="table table-striped table-bordered"  >
     <thead>
         <tr>
@@ -22,11 +25,11 @@
 
     <tbody>
         {% for viesti in viestit %}
-         {% if viesti.luettu == false %}
-         <tr class="info">
-         {% else %}
+        {% if viesti.luettu == false %}
+        <tr class="info">
+            {% else %}
         <tr>
-         {% endif %}
+            {% endif %}
             {% for tunnus in kayttajatunnus %}
             {% if tunnus.id == viesti.lahettajaid %}
             <td><a href="{{base_path}}/julkinenProfiilisivu/{{tunnus.id}}">{{tunnus.kayttajatunnus}}</a></td>
@@ -34,10 +37,16 @@
             {% endfor %}
             <td><a href="{{base_path}}/viestinSisalto/{{viesti.id}}">{{viesti.aihe}}</a></td>
             <td>{{viesti.viestinAika()}} <br> {{viesti.viestinPaiva()}}</td>
-            <th>{{forms.poista_nappi("#{base_path}/saapuneetViestit/#{viesti.id}", 'Poista viesti', 'Oletko varma, että haluat poistaa viestin?')}}</th>
+            <th>{{forms.submit_nappi("#{base_path}/saapuneetViestit/#{viesti.id}/lukematon", 
+                        'Aseta lukemattomaksi', 'btn btn-primary btn-sm')}}
+                {{forms.poista_nappi("#{base_path}/saapuneetViestit/#{viesti.id}", 'Poista viesti', 
+                    'Oletko varma, että haluat poistaa viestin?','btn btn-danger btn-sm')}}</th>
         </tr>
-
         {% endfor %}
     </tbody>
 </table>
+
+{% else %}
+<h3><p class="text-muted">Sinulla ei ole saapuneita viestejä</p></h3>
+{% endif %}
 {% endblock %}

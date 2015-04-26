@@ -33,7 +33,11 @@
                         <span class="icon-bar"></span>
                     </button>
                     <!-- Sovelluksen nimi -->
+                    {% if user_logged_in %}
+                    <a class="navbar-brand" href="{{base_path}}/kirjautuneenEtusivu">Ystävänvälitystä</a>
+                    {% else %}
                     <a class="navbar-brand" href="{{base_path}}">Ystävänvälitystä</a>
+                    {% endif %}
                 </div>
 
                 <div class="collapse navbar-collapse" id="navigation">
@@ -52,28 +56,29 @@
                             {% if maara == 0 %}
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Viestit <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{base_path}}/saapuneetViestit/{{user_logged_in.id}}">Saapuneet</a></li
+                                <li><a href="{{base_path}}/saapuneetViestit">Saapuneet</a></li
                                 <li class="divider"></li>
                                 {% else %}
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Viestit <span class="badge">{{maara}}</span><span class="caret"></span></a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a href="{{base_path}}/saapuneetViestit/{{user_logged_in.id}}">Saapuneet <span class="badge">{{maara}}</span></a></li>
+                                    <li><a href="{{base_path}}/saapuneetViestit">Saapuneet <span class="badge">{{maara}}</span></a></li>
                                     {% endif %}
                                     <li class="divider"></li>
-                                    <li><a href="{{base_path}}/lahetetytViestit/{{user_logged_in.id}}">Lähetetyt</a></li>
+                                    <li><a href="{{base_path}}/lahetetytViestit">Lähetetyt</a></li>
                                 </ul>
                         </li>
 
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Omat tiedot<span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="{{base_path}}/omaProfiilisivu/{{user_logged_in.id}}">Profiilisivu</a></li>
+                                <li><a href="{{base_path}}/omaProfiilisivu">Profiilisivu</a></li>
                                 <li class="divider"></li>
-                                <li><a href="{{base_path}}/{{user_logged_in.id}}/muokkaa">Muokkaa profiilia</a></li>
-                                <li><a href="{{base_path}}/{{user_logged_in.id}}/poistaTunnus">Poista käyttäjätunnus</a></li>
+                                <li><a href="{{base_path}}/muokkaa">Muokkaa profiilia</a></li>
+                                <li><a href="{{base_path}}/vaihdaSalasana">Vaihda salasana</a></li>
+                                <li><a href="{{base_path}}/poistaTunnus">Poista käyttäjätunnus</a></li>
                                 <li class="divider"></li>
                                 <form method="post" action="{{base_path}}/logout">
-                                    <li><button type="submit" class="btn btn-default">Kirjaudu ulos</button></li>
+                                    <li><button type="submit" class="btn btn-link">Kirjaudu ulos</button></li>
                                 </form>
 
                             </ul>

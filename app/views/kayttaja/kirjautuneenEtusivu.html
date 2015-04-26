@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "macros/forms.html" as forms %}
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
+<h1><p class="text-center">Hei {{user_logged_in.kayttajatunnus}}!</p></h1>
+
+<h3><p class="text-center">
+        Tiesitkö, että Ystävänvälitys-palvelulla on tällä hetkellä <strong>{{kayttajienMaara}}</strong> käyttäjää!
+        <br>
+        Nämäkin käyttäjät hakevat kanssasi samaa seuraa:
+        <br>
+        <br>
+    </p>
+</h3>
+{% if kayttajat %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Käyttäjätunnus</th>
+            <th>Nimi</th>
+            <th>Sukupuoli</th>
+            <th>Mitä haen</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for kayttaja in kayttajat %}
+        {% if kayttaja.id != user_logged_in.id %}
+        <tr>
+            <td><a href="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}">{{kayttaja.kayttajatunnus}}</a></td>
+            <td>{{kayttaja.nimi}}</td>
+            <td>{{kayttaja.sukupuoli}}</td>
+            {% for tarkotus in tarkoitukset %}
+            {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+            <td>{{tarkotus.nimi}}</td>
+            {% endif %}
+            {% endfor %}
+        </tr>
+    </tbody>
+    {% endif %}
+    {% endfor %}
+</table>
+{% endif %}
+<br>
+
+<h3><p class="text-center">Käy sanomassa heille moikat!</p></h3>
+<br>
+
+
+{% endblock %}

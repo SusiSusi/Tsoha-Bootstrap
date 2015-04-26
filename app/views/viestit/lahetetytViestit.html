@@ -10,6 +10,9 @@
 
 <h1>Lähetetyt viestit</h1>
 <br>
+
+{% if viestit %}
+
 <table class="table table-striped table-bordered"  >
     <thead>
         <tr>
@@ -21,25 +24,25 @@
 
     <tbody>
         {% for viesti in viestit %}
-        
+
         <tr>
             {% for kenelle in vastaanottaja %}
-               {% if viesti.id == kenelle.viestiid %}
+            {% if viesti.id == kenelle.viestiid %}
             {% for tunnus in kayttajatunnus %}
             {% if tunnus.id == kenelle.kayttajaid %}
             <td><a href="{{base_path}}/julkinenProfiilisivu/{{tunnus.id}}">{{tunnus.kayttajatunnus}}</a></td>
             {% endif %}
-             {% endfor %}
-             {% endif %}
             {% endfor %}
-           
+            {% endif %}
+            {% endfor %}          
             <td><a href="{{base_path}}/viestinSisalto/{{viesti.id}}">{{viesti.aihe}}</a></td>
-            <td>{{viesti.viestinAika()}} <br> {{viesti.viestinPaiva()}}</td>
-           
+            <td>{{viesti.viestinAika()}} <br> {{viesti.viestinPaiva()}}</td>          
         </tr>
-         
-       
         {% endfor %}
     </tbody>
 </table>
+
+{% else %}
+<h3><p class="text-muted">Sinulla ei ole lähetettyjä viestejä</p></h3>
+{% endif %}
 {% endblock %}

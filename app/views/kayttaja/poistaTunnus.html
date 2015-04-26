@@ -19,16 +19,16 @@
 
 <dl class="dl-horizontal">
     <dt>Nimi: </dt>
-    <dd>{{kayttaja.nimi}}</dd>
+    <dd>{{user_logged_in.nimi}}</dd>
     <dt>Syntymäaika: </dt>
-    <dd>{{kayttaja.tulostaSyntymaaika()}}</dd>
+    <dd>{{user_logged_in.tulostaSyntymaaika()}}</dd>
     <dt>Paikkakunta: </dt>
-    <dd>{{kayttaja.paikkakunta}}</dd>
+    <dd>{{user_logged_in.paikkakunta}}</dd>
     <dt>Sukupuoli: </dt>
-    <dd>{{kayttaja.getSukupuoli()}}</dd>
+    <dd>{{user_logged_in.getSukupuoli()}}</dd>
     <dt>Mitä haen: </dt>
     {% for tarkotus in tarkoitukset %}
-    {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+    {% if tarkotus.id == user_logged_in.hakutarkoitusid %}
     <dd>{{tarkotus.nimi}}</dd>
     {% endif %}
     {% endfor %}
@@ -37,7 +37,7 @@
 <br>
 <dl class="dl-horizontal">
     <dt>Tietoja minusta </dt>
-    <dd>{{kayttaja.omattiedot}}</dd>
+    <dd>{{user_logged_in.omattiedot}}</dd>
 </dl>
 <br>
 <div class="panel panel-danger">
@@ -49,12 +49,12 @@
         Hyväksy käyttäjätunnuksen poisto syöttämällä salasana.
         <br>
         <br>
-        <form method="post" action="{{base_path}}/{{kayttaja.id}}/poistaTunnus">
+        <form method="post" action="{{base_path}}/poistaTunnus">
         <div class="form-group">
             <label>Salasana</label>
             <input name="salasana" class="form-control" type="password" required>
         </div>
-        {{forms.poista_nappi("#{base_path}/#{kayttaja.id}/poistaTunnus",'Poista tunnus', 'Oletko nyt aivan varma, että haluat poistaa käyttäjätunnuksesi?')}}
+        {{forms.poista_nappi("#{base_path}/#poistaTunnus",'Poista tunnus', 'Oletko nyt aivan varma, että haluat poistaa käyttäjätunnuksesi?')}}
         </form>
     </div>
 </div>

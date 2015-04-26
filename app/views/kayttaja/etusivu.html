@@ -1,12 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Tervetuloa ystävänvälitykseen!</h1>
+{% import "macros/forms.html" as forms %}
 
-<p>
-    Etusivut ovat vielä kesken! Katotaan mitä kivaa tähän keksis :)
+<div class="jumbotron">
+    <h1>Tervetuloa Ystävänvälitys-palveluun!</h1>
     <br>
-</p>
-<h3>Rekisteröidy nyt ilmaiseksi!</h3>
-<a class="btn btn-primary" href="{{base_path}}/rekisterointi" role="button">Rekisteröidy</a>
-
+    <p>
+        Ystävänvälityksen avulla voit löytää uusia ystäviä tai vaikkapa elämäsi 
+        rakkauden! Palvelua käyttää huikeat <strong>{{kayttajienMaara}}</strong> käyttäjää ja joku 
+        heistä voi olla Sinun tuleva ystäväsi.
+        <br>
+        <br>
+        Rekisteröitymällä käyttäjäksi voit etsiä palvelusta juuri Sinulle sopivia ystäviä 
+        kattavalla haku-mahdollisuudella. Joten miksipä ei? Rekisteröidy nyt ilmaiseksi!
+        <br>
+        <br>
+        {{forms.normaali_nappi("#{base_path}/rekisterointi", "Rekisteröidy", "btn btn-primary btn-lg")}}    
+    </p>
+</div>
 {% endblock %}

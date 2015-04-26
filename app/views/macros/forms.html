@@ -1,5 +1,17 @@
-{% macro poista_nappi(action, text, poistonVahvistus) %}
-    <form method="post" action="{{action}}" class="destroy-form" data-confirm="{{poistonVahvistus}}" style="display: inline-block;">
-    <button type="submit" class="btn btn-danger">{{text|default('Poista')}}</button>
-  </form> 
+{% macro poista_nappi(action, text, poistonVahvistus, napinKoko) %}
+<form method="post" action="{{action}}" class="destroy-form" data-confirm="{{poistonVahvistus}}" style="display: inline-block;">
+    <button type="submit" class="{{napinKoko|default('btn btn-danger')}}">{{text|default('Poista')}}</button>
+</form> 
+{% endmacro %}
+
+{% macro normaali_nappi(action, text, napinKoko) %}
+<form action="{{action}}" style="display: inline-block;">
+    <button type="submit" class="{{napinKoko|default('btn btn-info')}}">{{text|default('Muokkaa')}}</button>
+</form> 
+{% endmacro %}
+
+{% macro submit_nappi(action, text, napinKoko) %}
+<form method="post" action="{{action}}" style="display: inline-block;">
+    <button type="submit" class="{{napinKoko|default('btn btn-info')}}">{{text|default('Hyväksy')}}</button>
+</form> 
 {% endmacro %}

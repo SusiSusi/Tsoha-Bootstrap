@@ -39,15 +39,13 @@ class Hakutarkoitus extends BaseModel {
         $kysely->execute();
         $rivit = $kysely->fetchAll();
         $tarkoitukset = array();
-
-        foreach ($rivit as $rivi) {
-            $tarkoitukset[] = new Hakutarkoitus(array(
-                'id' => $rivi['id'],
-                'nimi' => $rivi['nimi']
-            ));
+        if ($rivit) {
+            foreach ($rivit as $rivi) {
+                $tarkoitukset[] = new Hakutarkoitus($rivi);
+            }
+            return $tarkoitukset;
         }
-
-        return $tarkoitukset;
+        return null;
     }
 
     public static function etsiHakutarkoitus($id) {
@@ -57,13 +55,9 @@ class Hakutarkoitus extends BaseModel {
         $rivi = $kysely->fetch();
 
         if ($rivi) {
-            $tarkoitus = new Hakutarkoitus(array(
-                'id' => $rivi['id'],
-                'nimi' => $rivi['nimi']
-            ));
+            $tarkoitus = new Hakutarkoitus($rivi);
             return $tarkoitus;
         }
         return null;
     }
-
 }

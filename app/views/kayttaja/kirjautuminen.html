@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+{% import "macros/forms.html" as forms %}
 
 {% if error %}
 <div class="alert alert-danger">
@@ -38,7 +39,7 @@
     Rekisteröidy nyt, se on ilmaista!
     <br>
     <br>
-    <a class="btn btn-info" href="{{base_path}}/rekisterointi" role="button">Rekisteröidy</a>
+    {{forms.normaali_nappi("#{base_path}/rekisterointi", "Rekisteröidy")}}
   </div>
 </div>
 {% endblock %}

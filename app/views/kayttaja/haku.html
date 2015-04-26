@@ -88,7 +88,7 @@
         {% for kayttaja in kayttajat %}
         <tr>
             {% if kayttaja.id == user_logged_in.id %}
-            <td><a href="{{base_path}}/omaProfiilisivu/{{kayttaja.id}}">{{kayttaja.kayttajatunnus}}</a></td>
+            <td><a href="{{base_path}}/omaProfiilisivu">{{user_logged_in.kayttajatunnus}}</a></td>
             {% else %}
             <td><a href="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}">{{kayttaja.kayttajatunnus}}</a></td>
             {% endif %}

@@ -14,20 +14,20 @@
 <h1>Muokkaa profiilia {{user_logged_in.kayttajatunnus}}</h1>
 {% endif %}
 
-<form method="post" action="{{base_path}}/{{kayttaja.id}}/muokkaa">
+<form method="post" action="{{base_path}}/muokkaa">
     <div class="form-group">
         <label>Käyttäjätunnus</label>
-        <input class="form-control" value="{{kayttaja.kayttajatunnus}}" type="text" disabled="disabled">
-        <input name="kayttajatunnus" value="{{kayttaja.kayttajatunnus}}" type="hidden">
+        <input class="form-control" value="{{user_logged_in.kayttajatunnus}}" type="text" disabled="disabled">
+        <input name="kayttajatunnus" value="{{user_logged_in.kayttajatunnus}}" type="hidden">
     </div>
     <div class="form-group">
         <label>Nimi</label>
-        <input name='nimi' class="form-control" value="{{kayttaja.nimi}}" type="text" required>
+        <input name='nimi' class="form-control" value="{{user_logged_in.nimi}}" type="text" required>
     </div>
     <div class="form-group">
         <label>Sukupuoli</label>
         <br>
-        {% if kayttaja.sukupuoli == 'N' %}
+        {% if user_logged_in.sukupuoli == 'N' %}
         <input type="radio" name="sukupuoli" value="N" checked>
         Nainen
         <input type="radio" name="sukupuoli" value="M" disabled>
@@ -88,7 +88,7 @@
     </div>
     <div class="form-group">
         <label>Paikkakunta</label>
-        <input name='paikkakunta' class="form-control" value="{{kayttaja.paikkakunta}}" type="text" required>
+        <input name='paikkakunta' class="form-control" value="{{user_logged_in.paikkakunta}}" type="text" required>
     </div>
     <div>
         <label>Lisää kuva</label> 
@@ -97,7 +97,7 @@
     </div>
     <div class="form-group">
         <label>Tietoja minusta</label>
-        <textarea name='omattiedot' class="form-control">{{kayttaja.omattiedot}}</textarea>
+        <textarea name='omattiedot' class="form-control">{{user_logged_in.omattiedot}}</textarea>
     </div>
     <h3>Millaista seuraa haen</h3>
     <div class="form-group">
@@ -105,7 +105,7 @@
         <br>
         <select class="form-control" name="etsin">
             {% for tarkotus in tarkoitukset %}
-            {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+            {% if tarkotus.id == user_logged_in.hakutarkoitusid %}
             <option value="{{tarkotus.id}}" selected='selected'>{{tarkotus.nimi}}</option>
             {% else %}
             <option value="{{tarkotus.id}}">{{tarkotus.nimi}}</option>

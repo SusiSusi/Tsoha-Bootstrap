@@ -40,6 +40,10 @@ $routes->get('/', function() {
     KayttajaController::etusivu();
 });
 
+$routes->get('/kirjautuneenEtusivu', function() {
+    KayttajaController::kirjautuneenEtusivu();
+});
+
 $routes->get('/kayttajienListaukset', function() {
     KayttajaController::index();
 });
@@ -64,32 +68,40 @@ $routes->get('/julkinenProfiilisivu/:id', function($id) {
     KayttajaController::nayta($id);
 });
 
-$routes->get('/omaProfiilisivu/:id', function($id) {
-    KayttajaController::naytaOmaSivu($id);
+$routes->get('/omaProfiilisivu', function() {
+    KayttajaController::naytaOmaSivu();
 });
 
-$routes->get('/:id/muokkaa', function($id) {
-    KayttajaController::edit($id);
+$routes->get('/muokkaa', function() {
+    KayttajaController::edit();
 });
 
-$routes->post('/:id/muokkaa', function($id) {
-    KayttajaController::update($id);
+$routes->post('/muokkaa', function() {
+    KayttajaController::update();
 });
 
-$routes->get('/:id/poistaTunnus', function($id) {
-    KayttajaController::poistaTunnus($id);
+$routes->get('/vaihdaSalasana', function() {
+    KayttajaController::muutaSalasana();
 });
 
-$routes->post('/:id/poistaTunnus', function($id) {
-    KayttajaController::poista($id);
+$routes->post('/vaihdaSalasana', function() {
+    KayttajaController::salasananMuutos();
 });
 
-$routes->get('/saapuneetViestit/:id', function($id) {
-    ViestitController::kaikkiViestit($id);
+$routes->get('/poistaTunnus', function() {
+    KayttajaController::poistaTunnus();
 });
 
-$routes->get('/lahetetytViestit/:id', function($id) {
-    ViestitController::kaikkiLahetetytViestit($id);
+$routes->post('/poistaTunnus', function() {
+    KayttajaController::poista();
+});
+
+$routes->get('/saapuneetViestit', function() {
+    ViestitController::kaikkiViestit();
+});
+
+$routes->get('/lahetetytViestit', function() {
+    ViestitController::kaikkiLahetetytViestit();
 });
 
 $routes->post('/viestinSisalto/:id', function() {
@@ -104,12 +116,12 @@ $routes->get('/viestinSisalto/:id', function($id) {
     ViestitController::lueViesti($id);
 });
 
-$routes->post('/saapuneetViestit/:id', function($id) {
-    ViestitController::poistaViesti($id);
+$routes->post('/saapuneetViestit/:id/lukematon', function($id) {
+    ViestitController::asetaLukemattomaksi($id);
 });
 
 $routes->post('/saapuneetViestit/:id', function($id) {
-    ViestitController::asetaLukemattomaksi($id);
+    ViestitController::poistaViesti($id);
 });
 
 $routes->post('/lahetetytViestit/:id', function($id) {

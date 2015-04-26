@@ -1,74 +1,82 @@
 {% extends "base.html" %}
 {% block content %}
 
+<br>
+<br>
+
 {% if message %}
 <div class="alert alert-success">
     {{message}}
 </div>
 {% endif %}
 
-<h2>Käyttäjän {{kayttaja.kayttajatunnus}} profiili</h2>
-<br>
-<br>
-<br>
+{% if kayttaja.sukupuoli == 'N' %}
 
-<dl class="dl-horizontal">
-    <dt>Nimi: </dt>
-    <dd>{{kayttaja.nimi}}</dd>
-    <dt>Syntymäaika: </dt>
-    <dd>{{kayttaja.tulostaSyntymaaika()}}</dd>
-    <dt>Paikkakunta: </dt>
-    <dd>{{kayttaja.paikkakunta}}</dd>
-    <dt>Sukupuoli: </dt>
-    <dd>{{kayttaja.getSukupuoli()}}</dd>
-    <dt>Mitä haen: </dt>
-    {% for tarkotus in tarkoitukset %}
-    {% if tarkotus.id == kayttaja.hakutarkoitusid %}
-    <dd>{{tarkotus.nimi}}</dd>
-    {% endif %}
-    {% endfor %}
+<div class="panel panel-danger">
 
-</dl>
-<br>
-<dl class="dl-horizontal">
-    <dt>Tietoja minusta </dt>
-    <dd>{{kayttaja.omattiedot}}</dd>
-</dl>
-<br>
-<br>
-<br>
+    {% else %}
+    <div class="panel panel-info">
+        {% endif %}
+        <div class="panel-heading">  
+            <h3 class="panel-title">Käyttäjän {{kayttaja.kayttajatunnus}} profiili</h3>
+        </div>
+        <br>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Nimi: </dt>
+                <dd>{{kayttaja.nimi}}</dd>
+                <dt>Syntymäaika: </dt>
+                <dd>{{kayttaja.tulostaSyntymaaika()}}</dd>
+                <dt>Paikkakunta: </dt>
+                <dd>{{kayttaja.paikkakunta}}</dd>
+                <dt>Sukupuoli: </dt>
+                <dd>{{kayttaja.getSukupuoli()}}</dd>
+                <dt>Mitä haen: </dt>
+                {% for tarkotus in tarkoitukset %}
+                {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+                <dd>{{tarkotus.nimi}}</dd>
+                {% endif %}
+                {% endfor %}
+            </dl>
+            <dl class="dl-horizontal">
+                <dt>Tietoja minusta </dt>
+                <dd>{{kayttaja.omattiedot}}</dd>
+            </dl>
+            <br>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Lähetä viesti</button>
-<form method="post" action="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}"> 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Peru"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel">Lähetä viesti käyttäjälle {{kayttaja.kayttajatunnus}}</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="recipient-name" class="control-label">Aihe:</label>
-                            <input name="aihe" type="text" class="form-control" id="recipient-name">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Lähetä viesti</button>
+            <form method="post" action="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}"> 
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Peru"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="exampleModalLabel">Lähetä viesti käyttäjälle {{kayttaja.kayttajatunnus}}</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recipient-name" class="control-label">Aihe:</label>
+                                        <input name="aihe" type="text" class="form-control" id="recipient-name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message-text" class="control-label">Viesti</label>
+                                        <textarea name="sisalto" class="form-control" id="message-text" required="required"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <input name="viestiMuualta" value="1" type="hidden">
+                                <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
+                                <input name="vastaanottajaid" value="{{kayttaja.id}}" type="hidden">
+
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Peru</button>
+                                <button type="submit" class="btn btn-primary">Lähetä</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="message-text" class="control-label">Viesti</label>
-                            <textarea name="sisalto" class="form-control" id="message-text" required="required"></textarea>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <input name="viestiMuualta" value="1" type="hidden">
-                    <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
-                    <input name="vastaanottajaid" value="{{kayttaja.id}}" type="hidden">
-
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Peru</button>
-                    <button type="submit" class="btn btn-primary">Lähetä</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
-</form>
-{% endblock %}
+    {% endblock %}

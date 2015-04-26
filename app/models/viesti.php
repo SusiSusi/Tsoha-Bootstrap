@@ -12,8 +12,6 @@ class Viesti extends BaseModel {
         $kysely = DB::connection()->prepare('UPDATE Viesti SET luettu = :luettu WHERE id = :id RETURNING id');
         $kysely->execute(array('id' => $id, 'luettu' => 'true'));
         $rivi = $kysely->fetch();
-//        Kint::trace();
-//        Kint::dump($rivi);
         $this->id = $rivi['id'];
     }
 
@@ -21,7 +19,6 @@ class Viesti extends BaseModel {
         $kysely = DB::connection()->prepare('UPDATE Viesti SET luettu = :luettu WHERE id = :id RETURNING id');
         $kysely->execute(array('id' => $id, 'luettu' => 'false'));
         $rivi = $kysely->fetch();
-        $this->id = $rivi['id'];
     }
 
     public static function haeKaikkiViestit() {
@@ -29,16 +26,8 @@ class Viesti extends BaseModel {
         $kysely->execute();
         $rivit = $kysely->fetchAll();
         $viestit = array();
-
         foreach ($rivit as $rivi) {
-            $viestit[] = new Viesti(array(
-                'id' => $rivi['id'],
-                'aihe' => $rivi['aihe'],
-                'sisalto' => $rivi['sisalto'],
-                'aika' => $rivi['aika'],
-                'luettu' => $rivi['luettu'],
-                'lahettajaID' => $rivi['lahettajaID']
-            ));
+            $viestit[] = new Viesti($rivi);
         }
         return $viestit;
     }
@@ -49,21 +38,9 @@ class Viesti extends BaseModel {
         $rivi = $kysely->fetch();
 
         if ($rivi) {
-            $viesti = new Viesti(array(
-                'id' => $id,
-                'aihe' => $rivi['aihe'],
-                'sisalto' => $rivi['sisalto'],
-                'aika' => $rivi['aika'],
-                'luettu' => $rivi['luettu'],
-                'lahettajaid' => $rivi['lahettajaid']
-            ));
-
+            $viesti = new Viesti($rivi);
             return $viesti;
         }
-
-        Kint::trace();
-        Kint::dump($viesti);
-
         return null;
     }
 
@@ -74,14 +51,7 @@ class Viesti extends BaseModel {
 
         if ($rivit) {
             foreach ($rivit as $rivi) {
-                $viestit[] = new Viesti(array(
-                    'id' => $rivi['id'],
-                    'aihe' => $rivi['aihe'],
-                    'sisalto' => $rivi['sisalto'],
-                    'aika' => $rivi['aika'],
-                    'luettu' => $rivi['luettu'],
-                    'lahettajaid' => $rivi['lahettajaid']
-                ));
+                $viestit[] = new Viesti($rivi);
             }
             krsort($viestit);
             return $viestit;
@@ -95,8 +65,6 @@ class Viesti extends BaseModel {
                 WHERE id = :id RETURNING id');
         $kysely->execute(array('id' => $id));
         $rivi = $kysely->fetch();
-//        Kint::trace();
-//        Kint::dump($rivi);
     }
 
     public static function poistaListanKaikkiViestit($lista) {
@@ -132,11 +100,10 @@ class Viesti extends BaseModel {
         $kysely->execute(array('aihe' => $this->aihe, 'sisalto' => $this->sisalto,
             'aika' => $this->aika, 'luettu' => 'false', 'lahettajaid' => $this->lahettajaid));
         $rivi = $kysely->fetch();
-//        Kint::trace();
-//        Kint::dump($rivi);
         $this->id = $rivi['id'];
     }
 
+    // tätä metodia ei käytetä (vielä?) mihinkään
     public function muokkaa($id) {
         $kysely = DB::connection()->prepare('UPDATE Viesti
                 SET aihe = :aihe, sisalto = :sisalto,  
@@ -148,9 +115,6 @@ class Viesti extends BaseModel {
             'aika' => $this->aika,
             'luettu' => 'false', 'lahettajaid' => $this->lahettajaid));
         $rivi = $kysely->fetch();
-//        Kint::trace();
-//        Kint::dump($rivi);
         $this->id = $rivi['id'];
     }
-
 }

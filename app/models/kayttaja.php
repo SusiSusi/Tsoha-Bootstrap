@@ -15,7 +15,7 @@ class Kayttaja extends BaseModel {
     }
 
     public function getKuva() {
-        $kuva = asset($this->kuva);
+        $kuva = $this->kuva;
         return $kuva;
     }
 
@@ -50,7 +50,7 @@ class Kayttaja extends BaseModel {
     public function validateKayttajatunnus() {
         $errors = array();
         if (!$this->validatePieninPituus($this->kayttajatunnus, 4)) {
-            $errors[] = 'Käyttäjätunnuksen pituuden tulee olla vähintään kuusi merkkiä pitkä';
+            $errors[] = 'Käyttäjätunnuksen pituuden tulee olla vähintään neljä merkkiä pitkä';
         }
         if (!$this->validateSuurinPituus($this->kayttajatunnus, 20)) {
             $errors[] = 'Käyttäjätunnuksen pituus saa olla enintään 20 merkkiä pitkä';
@@ -77,6 +77,7 @@ class Kayttaja extends BaseModel {
         return true;
     }
 
+    // tämä validointi ei ole (vielä) käytössä!
     public function validateSalasana() {
         $errors = array();
         if (!$this->validatePieninPituus($this->salasana, 6)) {
@@ -97,14 +98,21 @@ class Kayttaja extends BaseModel {
             'omattiedot' => $this->omattiedot, 'hakutarkoitusid' => $this->hakutarkoitusid,
             'kuva' => $this->kuva, 'oikeudet' => 'false'));
         $rivi = $kysely->fetch();
-//        Kint::trace();
-//        Kint::dump($rivi);
         $this->id = $rivi['id'];
     }
 
-    public static function kaikkiKayttajat() {
-        $kysely = DB::connection()->prepare('SELECT distinct * FROM Kayttaja ORDER BY id desc');
-        $kysely->execute();
+    // hakee kaikki käyttäjät ja lajittelee ne omille sivuilleen, yhdellä sivulla 10 käyttäjää
+    public static function kaikkiKayttajat($options) {
+        if (isset($options['sivu']) && isset($options['sivunKoko'])) {
+            $sivu = $options['sivu'];
+            $sivunKoko = $options['sivunKoko'];
+        } else {
+            $sivu = 1;
+            $sivunKoko = 10;
+        }
+        $kysely = DB::connection()->prepare('SELECT distinct * FROM Kayttaja ORDER BY id desc 
+                LIMIT :limit OFFSET :offset');
+        $kysely->execute(array('limit' => $sivunKoko, 'offset' => $sivunKoko * ($sivu - 1)));
         $rivit = $kysely->fetchAll();
         $kayttajat = array();
         foreach ($rivit as $rivi) {
@@ -113,6 +121,20 @@ class Kayttaja extends BaseModel {
         return $kayttajat;
     }
 
+    // hakee kaikki käyttäjät tietokannasta - tätä metodia käyttää muut metodit käyttäjätietojen tulostukseen
+    public static function kaikkiKayttajatPerus() {
+        $kysely = DB::connection()->prepare('SELECT distinct * FROM Kayttaja ORDER BY id desc');
+        $kysely->execute();
+        $rivit = $kysely->fetchAll();
+        $kayttajat = array();
+
+        foreach ($rivit as $rivi) {
+            $kayttajat[] = new Kayttaja($rivi);
+        }
+        return $kayttajat;
+    }
+
+    // hakee tietokannasta kaikki ne käyttäjät, jotka toteuttavat hakukriteerin
     public static function kaikkiKayttajatHaulla($options) {
         $kyselyHakusanalla = 'SELECT distinct * FROM Kayttaja';
         $vaihtoehdot = array();
@@ -120,7 +142,7 @@ class Kayttaja extends BaseModel {
             if ($options['sukupuoli'] == 'E') {
                 $options['sukupuoli'] = '';
             }
-            if ($options['hakutarkoitus'] == -1) {
+            if ($options['hakutarkoitus'] == -1) { // haun tulokseksi sallittu käyttäjät kaikilta hakutarkoituksilta
                 $kyselyHakusanalla .= ' WHERE kayttajatunnus LIKE :tunnus AND sukupuoli LIKE :puoli
                      AND syntymaaika BETWEEN :vuosi1 AND :vuosi2 AND paikkakunta LIKE :kunta
                      AND hakutarkoitusid BETWEEN :minArvo AND :maxArvo';
@@ -138,7 +160,6 @@ class Kayttaja extends BaseModel {
             $vaihtoehdot['vuosi2'] = '31.12.' . $options['vuosi2'];
             $vaihtoehdot['kunta'] = '%' . $options['paikkakunta'] . '%';
         }
-//        Kint::dump($options);
         $kyselyHakusanalla .= ' ORDER BY kayttajatunnus';
         $kysely = DB::connection()->prepare($kyselyHakusanalla);
         if ($options == null) {
@@ -160,23 +181,9 @@ class Kayttaja extends BaseModel {
         $rivi = $kysely->fetch();
 
         if ($rivi) {
-            $kayttaja = new Kayttaja(array(
-                'id' => $rivi['id'],
-                'kayttajatunnus' => $rivi['kayttajatunnus'],
-                'nimi' => $rivi['nimi'],
-                'salasana' => $rivi['salasana'],
-                'syntymaaika' => $rivi['syntymaaika'],
-                'sukupuoli' => $rivi['sukupuoli'],
-                'paikkakunta' => $rivi['paikkakunta'],
-                'omattiedot' => $rivi['omattiedot'],
-                'kuva' => $rivi['kuva'],
-                'hakutarkoitusid' => $rivi['hakutarkoitusid'],
-                'oikeudet' => $rivi['oikeudet']
-            ));
-
+            $kayttaja = new Kayttaja($rivi);
             return $kayttaja;
         }
-
         return null;
     }
 
@@ -192,9 +199,14 @@ class Kayttaja extends BaseModel {
             'omattiedot' => $this->omattiedot, 'hakutarkoitusid' => $this->hakutarkoitusid,
             'kuva' => $this->kuva));
         $rivi = $kysely->fetch();
-//        Kint::trace();
-//        Kint::dump($rivi);
         $this->id = $rivi['id'];
+    }
+
+    public static function muutaSalasana($tiedot) {
+        $kysely = DB::connection()->prepare('UPDATE Kayttaja
+                SET salasana = :salasana WHERE id = :id RETURNING id');
+        $kysely->execute(array('salasana' => $tiedot['salasana'], 'id' => $tiedot['id']));
+        $rivi = $kysely->fetch();
     }
 
     public function poistaTunnus($id) {
@@ -202,8 +214,6 @@ class Kayttaja extends BaseModel {
                 WHERE id = :id RETURNING id');
         $kysely->execute(array('id' => $id));
         $rivi = $kysely->fetch();
-//        Kint::trace();
-//        Kint::dump($rivi);
     }
 
     public function authenticate($kayttajatunnus, $salasana) {
@@ -211,26 +221,38 @@ class Kayttaja extends BaseModel {
                 WHERE kayttajatunnus = :kayttajatunnus AND salasana = :salasana LIMIT 1');
         $kysely->execute(array('kayttajatunnus' => $kayttajatunnus, 'salasana' => $salasana));
         $rivi = $kysely->fetch();
-//        Kint::trace();
-//        Kint::dump($rivi);
         if ($rivi) {
-            $kayttaja = new Kayttaja(array(
-                'id' => $rivi['id'],
-                'kayttajatunnus' => $rivi['kayttajatunnus'],
-                'nimi' => $rivi['nimi'],
-                'salasana' => $rivi['salasana'],
-                'syntymaaika' => $rivi['syntymaaika'],
-                'sukupuoli' => $rivi['sukupuoli'],
-                'paikkakunta' => $rivi['paikkakunta'],
-                'omattiedot' => $rivi['omattiedot'],
-                'kuva' => $rivi['kuva'],
-                'hakutarkoitusid' => $rivi['hakutarkoitusid'],
-                'oikeudet' => $rivi['oikeudet']
-            ));
+            $kayttaja = new Kayttaja($rivi);
             return $kayttaja;
         } else {
             return null;
         }
     }
 
+    public static function laskeKayttajienMaara() {
+        $kysely = DB::connection()->prepare('SELECT count(id) FROM Kayttaja');
+        $kysely->execute();
+        $rivi = $kysely->fetch();
+        if ($rivi) {
+            return $rivi[0];
+        }
+        return null;
+    }
+
+    // haetaan kirjautuneen etusivulle käyttäjät jotka etsivät seuraa samalla hakutarkoituksella
+    // sivulle tulostetaan max. 5 uusinta käyttäjää ko. hakutarkoituksella
+    public static function haeKayttajatHakuperusteenMukaan($hakutarkoitusid) {
+        $kysely = DB::connection()->prepare('SELECT distinct * FROM Kayttaja WHERE 
+                 hakutarkoitusid = :hakutarkoitusid ORDER BY id desc LIMIT 5');
+        $kysely->execute(array('hakutarkoitusid' => $hakutarkoitusid));
+        $rivit = $kysely->fetchAll();
+        $kayttajat = array();
+        if ($rivit) {
+            foreach ($rivit as $rivi) {
+                $kayttajat[] = new Kayttaja($rivi);
+            }
+            return $kayttajat;
+        }
+        return null;
+    }
 }
