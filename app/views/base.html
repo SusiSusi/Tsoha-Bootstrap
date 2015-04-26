@@ -44,7 +44,7 @@
                     <ul class="nav navbar-nav">
                         <!-- Navigaation linkit -->
                         <li><a href="{{base_path}}/kayttajienListaukset">Käyttäjät</a></li>
-                        <li><a href="{{base_path}}/haku">Haku</a></li>
+                        <li><a href="{{base_path}}/haku"><span class="glyphicon glyphicon-search"></span> Haku</a></li>
 
                     </ul>
 
@@ -73,12 +73,12 @@
                             <ul class="dropdown-menu" role="menu">
                                 <li><a href="{{base_path}}/omaProfiilisivu">Profiilisivu</a></li>
                                 <li class="divider"></li>
-                                <li><a href="{{base_path}}/muokkaa">Muokkaa profiilia</a></li>
-                                <li><a href="{{base_path}}/vaihdaSalasana">Vaihda salasana</a></li>
-                                <li><a href="{{base_path}}/poistaTunnus">Poista käyttäjätunnus</a></li>
+                                <li><a href="{{base_path}}/muokkaa"><span class="glyphicon glyphicon-pencil"></span> Muokkaa profiilia</a></li>
+                                <li><a href="{{base_path}}/vaihdaSalasana"><span class="glyphicon glyphicon-pencil"></span> Vaihda salasana</a></li>
+                                <li><a href="{{base_path}}/poistaTunnus"><span class="glyphicon glyphicon-remove"></span> Poista käyttäjätunnus</a></li>
                                 <li class="divider"></li>
                                 <form method="post" action="{{base_path}}/logout">
-                                    <li><button type="submit" class="btn btn-link">Kirjaudu ulos</button></li>
+                                    <li><button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-log-out"></span> Kirjaudu ulos</button></li>
                                 </form>
 
                             </ul>
@@ -87,8 +87,8 @@
 
                     {% else %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{base_path}}/rekisterointi">Rekisteröidy</a></li>
-                        <li><a href="{{base_path}}/kirjautuminen">Kirjaudu sisään</a></li>
+                        <li><a href="{{base_path}}/rekisterointi"><span class="glyphicon glyphicon-user"></span> Rekisteröidy</a></li>
+                        <li><a href="{{base_path}}/kirjautuminen"><span class="glyphicon glyphicon-log-in"></span> Kirjaudu sisään</a></li>
                     </ul>
                     {% endif %}
                 </div>
