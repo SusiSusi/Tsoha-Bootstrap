@@ -97,7 +97,7 @@ class KayttajaController extends BaseController {
             'sukupuoli' => $arvot['sukupuoli'],
             'paikkakunta' => $arvot['paikkakunta'],
             'omattiedot' => $arvot['omattiedot'],
-            'kuva' => $arvot['kuva'],
+//            'kuva' => $arvot['kuva'],
             'hakutarkoitusid' => $hakutarkoitus
         );
         $synttarit = array(
@@ -183,7 +183,7 @@ class KayttajaController extends BaseController {
             View::make('kayttaja/vaihdaSalasana.html', array('errors' => $errors));
         } else {
             self::get_user_logged_in()->muutaSalasana($tiedot);
-            Redirect::to('/kirjautuneenEtusivu', array('message' => 'Salasana muutettu!'));
+            Redirect::to('/kirjautuneenEtusivu', array('message' => 'Salasana vaihdettu!'));
         }
     }
 
@@ -206,7 +206,7 @@ class KayttajaController extends BaseController {
             'sukupuoli' => self::get_user_logged_in()->sukupuoli,
             'paikkakunta' => $arvot['paikkakunta'],
             'omattiedot' => $arvot['omattiedot'],
-            'kuva' => $arvot['kuva'],
+//            'kuva' => $arvot['kuva'],
             'hakutarkoitusid' => $arvot['etsin']
         );
         $kayttaja = new Kayttaja($attributes);

@@ -49,12 +49,13 @@
         Hyväksy käyttäjätunnuksen poisto syöttämällä salasana.
         <br>
         <br>
-        <form method="post" action="{{base_path}}/poistaTunnus">
+        <form method="post" action="{{base_path}}/poistaTunnus" class="destroy-form" data-confirm="Oletko nyt aivan varma, että haluat poistaa käyttäjätunnuksesi?">
         <div class="form-group">
             <label>Salasana</label>
             <input name="salasana" class="form-control" type="password" required>
         </div>
-        {{forms.poista_nappi("#{base_path}/#poistaTunnus",'Poista tunnus', 'Oletko nyt aivan varma, että haluat poistaa käyttäjätunnuksesi?')}}
+             <button type="submit" class="btn btn-danger">Poista tunnus</button>
+       
         </form>
     </div>
 </div>
