@@ -100,6 +100,10 @@ $routes->get('/saapuneetViestit', function() {
     ViestitController::kaikkiViestit();
 });
 
+$routes->get('/lisaaKiinnostus', function() {
+    KiinnostuksetController::lisaaKiinnostus();
+});
+
 $routes->get('/lahetetytViestit', function() {
     ViestitController::kaikkiLahetetytViestit();
 });
@@ -126,6 +130,10 @@ $routes->post('/saapuneetViestit/:id', function($id) {
 
 $routes->post('/lahetetytViestit/:id', function($id) {
     ViestitController::poistaViesti($id);
+});
+
+$routes->post('/omaProfiilisivu/:id', function($id) {
+    KiinnostuksetController::poistaKiinnostus($id);
 });
 
 $routes->post('/logout', function() {

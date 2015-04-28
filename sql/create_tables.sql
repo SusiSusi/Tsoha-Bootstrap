@@ -26,7 +26,8 @@ nimi varchar(100) -- kiinnostuksen nimi, esim. eläimet
 CREATE TABLE Kohteet(
 id SERIAL PRIMARY KEY, -- pääavain kokonaisluku
 kayttajaID INTEGER REFERENCES Kayttaja(id), -- viiteavain Kayttaja-tauluun
-kiinnostusID INTEGER REFERENCES Kiinnostukset(id) -- viiteavain Kiinnostukset-tauluun
+kiinnostusID INTEGER REFERENCES Kiinnostukset(id), -- viiteavain Kiinnostukset-tauluun
+nakyvyys boolean -- true = kiinnostus näkyy kaikille, false = kiinnostus näkyy kaikille niille, joilla on sama hakutarkoitus
 );
 
 CREATE TABLE Viesti(

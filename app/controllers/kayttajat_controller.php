@@ -146,18 +146,24 @@ class KayttajaController extends BaseController {
         self::check_logged_in();
         $kayttaja = Kayttaja::etsi($id);
         $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
+        $kiinnostukset = Kohteet::haeKayttajanKiinnostukset($id);
+        $kiinnostustenNimet = Kiinnostukset::haeKaikkiKiinnostukset();
         $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
         View::make('kayttaja/julkinenProfiilisivu.html', array('kayttaja' => $kayttaja,
-            'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat));
+            'tarkoitukset' => $tarkoitukset, 'maara' => $lukemattomat, 'kiinnostukset' => $kiinnostukset,
+            'kiinnostustenNimet' => $kiinnostustenNimet));
     }
 
     // metodi luo käyttäjän oman profiilisivun mitä muut käyttäjät eivät näe
     public static function naytaOmaSivu() {
         self::check_logged_in();
         $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
+        $kiinnostukset = Kohteet::haeKayttajanKiinnostukset(self::get_user_logged_in()->id);
+        $kiinnostustenNimet = Kiinnostukset::haeKaikkiKiinnostukset();
         $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
         View::make('kayttaja/omaProfiilisivu.html', array('tarkoitukset' => $tarkoitukset,
-            'maara' => $lukemattomat));
+            'maara' => $lukemattomat, 'kiinnostukset' => $kiinnostukset, 
+            'kiinnostustenNimet' => $kiinnostustenNimet));
     }
 
     public static function muutaSalasana() {
@@ -252,6 +258,8 @@ class KayttajaController extends BaseController {
             Vastaanottaja::poistaListanKaikkiKytkokset($kaikkiLahetetytViestit);
             Viesti::poistaListanKaikkiViestit($kaikkiLahetetytViestit);
             Viesti::poistaListanKaikkiViestit($kaikkiSaapuneetViestit);
+            $kaikkiKiinnostukset = Kohteet::haeKayttajanKiinnostukset(self::get_user_logged_in()->id);
+            Kohteet::poistaListanKaikkiKytkokset($kaikkiKiinnostukset);
             $kayttaja = new Kayttaja(array('id' => self::get_user_logged_in()->id));
             $kayttaja->poistaTunnus(self::get_user_logged_in()->id);
             Redirect::to('/kirjautuminen', array('message' => 'Käyttäjätunnus poistettu.'));

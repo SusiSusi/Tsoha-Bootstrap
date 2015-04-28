@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+{% import "macros/forms.html" as forms %}
+
+{% if error %}
+<div class="alert alert-danger">
+    <ul>
+        <li>{{error}}</li>
+    </ul>
+</div>
+{% endif %}
+
+{% if message %}
+<div class="alert alert-success">
+    <ul>
+        <li>{{message}}</li>
+    </ul>
+</div>
+{% endif %}
+
+<br>
+
+<form method="get" action="" class="form-inline">
+    <div class="panel panel-info">
+        <div class="panel-heading"> 
+            <h3 class="panel-title">Lisää kiinnostuksia</h3>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <label>Kiinnostus</label>
+                <br>
+                <select class="form-control" name="kiinnostus">
+                    {% for kiinnostus in kiinnostukset %}
+                    <option value="{{kiinnostus.id}}">{{kiinnostus.nimi}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <br>
+            <div class="form-group">
+                <label>Näkyvyys</label>
+                <br>
+                <input type="radio" name="nakyvyys" value="K" required>
+                Kaikki käyttäjät
+                <input type="radio" name="nakyvyys" value="E" required>
+                Käyttäjät, jotka hakevat samaa seuraa 
+            </div>
+            <br>
+            <br>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Lisää</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{forms.normaali_nappi("#{base_path}/omaProfiilisivu", 'Takaisin profiilisivulle')}}
+
+{% endblock %}

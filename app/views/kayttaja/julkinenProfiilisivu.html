@@ -10,73 +10,111 @@
 </div>
 {% endif %}
 
-{% if kayttaja.sukupuoli == 'N' %}
-
-<div class="panel panel-danger">
-
-    {% else %}
-    <div class="panel panel-info">
-        {% endif %}
-        <div class="panel-heading">  
-            <h3 class="panel-title">Käyttäjän {{kayttaja.kayttajatunnus}} profiili</h3>
-        </div>
-        <br>
-        <div class="panel-body">
-            <dl class="dl-horizontal">
-                <dt>Nimi: </dt>
-                <dd>{{kayttaja.nimi}}</dd>
-                <dt>Syntymäaika: </dt>
-                <dd>{{kayttaja.tulostaSyntymaaika()}}</dd>
-                <dt>Paikkakunta: </dt>
-                <dd>{{kayttaja.paikkakunta}}</dd>
-                <dt>Sukupuoli: </dt>
-                <dd>{{kayttaja.getSukupuoli()}}</dd>
-                <dt>Mitä haen: </dt>
-                {% for tarkotus in tarkoitukset %}
-                {% if tarkotus.id == kayttaja.hakutarkoitusid %}
-                <dd>{{tarkotus.nimi}}</dd>
+<div class="row">
+    <div class="col-sm-3 col-md-6">
+        {% if kayttaja.sukupuoli == 'N' %}
+        <div class="panel panel-danger">
+            {% else %}
+            <div class="panel panel-info">
                 {% endif %}
-                {% endfor %}
-            </dl>
-            <dl class="dl-horizontal">
-                <dt>Tietoja minusta </dt>
-                <dd>{{kayttaja.omattiedot}}</dd>
-            </dl>
-            <br>
-
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Lähetä viesti</button>
-            <form method="post" action="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}"> 
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Peru"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="exampleModalLabel">Lähetä viesti käyttäjälle {{kayttaja.kayttajatunnus}}</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="control-label">Aihe:</label>
-                                        <input name="aihe" type="text" class="form-control" id="recipient-name">
+                <div class="panel-heading">  
+                    <h3 class="panel-title">Käyttäjän {{kayttaja.kayttajatunnus}} profiili</h3>
+                </div>
+                <br>
+                <div class="panel-body">
+                    <dl class="dl-horizontal">
+                        <dt>Nimi: </dt>
+                        <dd>{{kayttaja.nimi}}</dd>
+                        <dt>Syntymäaika: </dt>
+                        <dd>{{kayttaja.tulostaSyntymaaika()}}</dd>
+                        <dt>Paikkakunta: </dt>
+                        <dd>{{kayttaja.paikkakunta}}</dd>
+                        <dt>Sukupuoli: </dt>
+                        <dd>{{kayttaja.getSukupuoli()}}</dd>
+                        <dt>Mitä haen: </dt>
+                        {% for tarkotus in tarkoitukset %}
+                        {% if tarkotus.id == kayttaja.hakutarkoitusid %}
+                        <dd>{{tarkotus.nimi}}</dd>
+                        {% endif %}
+                        {% endfor %}
+                    </dl>
+                    <dl class="dl-horizontal">
+                        <dt>Tietoja minusta </dt>
+                        <dd>{{kayttaja.omattiedot}}</dd>
+                    </dl>
+                    <br>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Lähetä viesti</button>
+                    <form method="post" action="{{base_path}}/julkinenProfiilisivu/{{kayttaja.id}}"> 
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Peru"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="exampleModalLabel">Lähetä viesti käyttäjälle {{kayttaja.kayttajatunnus}}</h4>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="message-text" class="control-label">Viesti</label>
-                                        <textarea name="sisalto" class="form-control" id="message-text" required="required"></textarea>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">Aihe:</label>
+                                                <input name="aihe" type="text" class="form-control" id="recipient-name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="message-text" class="control-label">Viesti</label>
+                                                <textarea name="sisalto" class="form-control" id="message-text" required="required"></textarea>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <input name="viestiMuualta" value="1" type="hidden">
-                                <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
-                                <input name="vastaanottajaid" value="{{kayttaja.id}}" type="hidden">
+                                    <div class="modal-footer">
+                                        <input name="viestiMuualta" value="1" type="hidden">
+                                        <input name="lahettajaid" value="{{user_logged_in.id}}" type="hidden">
+                                        <input name="vastaanottajaid" value="{{kayttaja.id}}" type="hidden">
 
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Peru</button>
-                                <button type="submit" class="btn btn-primary">Lähetä</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Peru</button>
+                                        <button type="submit" class="btn btn-primary">Lähetä</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
+            </div>
+        </div>
+
+        {% if kiinnostukset %}
+        <div class="col-sm-3 col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading">  
+                    <h3 class="panel-title">Kiinnostukset</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for kiinnostus in kiinnostukset %}
+                            {% for knimi in kiinnostustenNimet %}
+                            {% if knimi.id == kiinnostus.kiinnostusid %}
+                            <tr>
+                            {% if kiinnostus.nakyvyys %}
+                            <td>{{knimi.nimi}}</td>
+                            {% else %}
+                            {% if kayttaja.hakutarkoitusid == user_logged_in.hakutarkoitusid %}
+                            <td>{{knimi.nimi}}</td>
+                            {% endif %}
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+                          
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
     {% endblock %}

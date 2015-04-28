@@ -18,14 +18,24 @@ omatTiedot, hakutarkoitusID, oikeudet) VALUES
 -- Kiinnostukset-taulun testidata
 INSERT INTO Kiinnostukset (nimi) VALUES
 ('Eläimet'),
+('Kissat'),
+('Koirat'),
 ('Jääkiekko'),
+('Jalkapallo'),
+('Koodaaminen'),
+('Talous'),
+('Matematiikka'),
+('Opiskelu'),
 ('Matkustelu');
 
 -- Kohteet-taulun testidata
-INSERT INTO Kohteet (kayttajaID, kiinnostusID) VALUES
-(2, 1),
-(2, 3),
-(3, 2);
+INSERT INTO Kohteet (kayttajaID, kiinnostusID, nakyvyys) VALUES
+(2, 1, true),
+(2, 7, false),
+(1, 8, false),
+(4, 9, true),
+(4, 3, false),
+(3, 2, true);
 
 -- Viestit-taulun testidata
 INSERT INTO Viesti (aihe, sisalto, aika, luettu, lahettajaID) VALUES
