@@ -2,8 +2,6 @@
 {% block content %}
 {% import "macros/forms.html" as forms %}
 
-<br>
-<br>
 
 {% if message %}
 <div class="alert alert-success">
@@ -11,88 +9,95 @@
 </div>
 {% endif %}
 
-<div class="row">
-    <div class="col-sm-3 col-md-6">
-        {% if user_logged_in.sukupuoli == 'N' %}
-        <div class="panel panel-danger">
-            {% else %}
-            <div class="panel panel-info">
+{% if user_logged_in.sukupuoli == 'N' %}
+<div class="panel panel-danger">
+    {% else %}
+    <div class="panel panel-info">
+        {% endif %}
+        <div class="panel-heading">  
+            <h3 class="panel-title">Omat tietoni</h3>
+        </div>
+        <br>
+        <div class="panel-body">
+            <dl class="dl-horizontal">
+                <dt>Käyttäjätunnus: </dt>
+                <dd>{{user_logged_in.kayttajatunnus}}</dd>
+                <dt>Nimi: </dt>
+                <dd>{{user_logged_in.nimi}}</dd>
+                <dt>Syntymäaika: </dt>
+                <dd>{{user_logged_in.tulostaSyntymaaika()}}</dd>
+                <dt>Paikkakunta: </dt>
+                <dd>{{user_logged_in.paikkakunta}}</dd>
+                <dt>Sukupuoli: </dt>
+                <dd>{{user_logged_in.getSukupuoli()}}</dd>
+                <dt>Mitä haen: </dt>
+                {% for tarkotus in tarkoitukset %}
+                {% if tarkotus.id == user_logged_in.hakutarkoitusid %}
+                <dd>{{tarkotus.nimi}}</dd>
                 {% endif %}
-                <div class="panel-heading">  
-                    <h3 class="panel-title">Omat tietoni</h3>
-                </div>
-                <br>
-                <div class="panel-body">
-                    <dl class="dl-horizontal">
-                        <dt>Käyttäjätunnus: </dt>
-                        <dd>{{user_logged_in.kayttajatunnus}}</dd>
-                        <dt>Nimi: </dt>
-                        <dd>{{user_logged_in.nimi}}</dd>
-                        <dt>Syntymäaika: </dt>
-                        <dd>{{user_logged_in.tulostaSyntymaaika()}}</dd>
-                        <dt>Paikkakunta: </dt>
-                        <dd>{{user_logged_in.paikkakunta}}</dd>
-                        <dt>Sukupuoli: </dt>
-                        <dd>{{user_logged_in.getSukupuoli()}}</dd>
-                        <dt>Mitä haen: </dt>
-                        {% for tarkotus in tarkoitukset %}
-                        {% if tarkotus.id == user_logged_in.hakutarkoitusid %}
-                        <dd>{{tarkotus.nimi}}</dd>
+                {% endfor %}
+            </dl>
+            <br>
+            <dl class="dl-horizontal">
+                <dt>Tietoja minusta </dt>
+                <dd>{{user_logged_in.omattiedot}}</dd>
+            </dl>
+            <br>
+            {{forms.normaali_nappi("#{base_path}/muokkaa", "Muokkaa profiilia",'btn btn-primary')}}
+            {{forms.normaali_nappi("#{base_path}/vaihdaSalasana", "Vaihda salasana",'btn btn-primary')}}
+        </div>
+
+    </div>
+    {% if kiinnostukset %}
+
+    <div class="panel panel-success">
+        <div class="panel-heading">  
+            <h3 class="panel-title">Kiinnostukseni</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Näkyvyys</th>
+                        <th>Muuta</th>
+                        <th>Poista</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for kiinnostus in kiinnostukset %}
+                    {% for knimi in kiinnostustenNimet %}
+                    {% if knimi.id == kiinnostus.kiinnostusid %}
+                <form method="post" action="{{base_path}}/omaProfiilisivu/{{kiinnostus.kiinnostusid}}/muuta">
+                    <tr>
+                        <td>{{knimi.nimi}}</td>
                         {% endif %}
                         {% endfor %}
-                    </dl>
-                    <br>
-                    <dl class="dl-horizontal">
-                        <dt>Tietoja minusta </dt>
-                        <dd>{{user_logged_in.omattiedot}}</dd>
-                    </dl>
-                    <br>
-                    {{forms.normaali_nappi("#{base_path}/muokkaa", "Muokkaa profiilia",'btn btn-primary')}}
-                    {{forms.normaali_nappi("#{base_path}/vaihdaSalasana", "Vaihda salasana",'btn btn-primary')}}
-                </div>
-            </div>
-        </div>
-        {% if kiinnostukset %}
-        <div class="col-sm-3 col-md-6">
-            <div class="panel panel-success">
-                <div class="panel-heading">  
-                    <h3 class="panel-title">Kiinnostukseni</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Näkyvyys</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for kiinnostus in kiinnostukset %}
-                            {% for knimi in kiinnostustenNimet %}
-                            {% if knimi.id == kiinnostus.kiinnostusid %}
-                            <tr>
-                                <td>{{knimi.nimi}}</td>
-                                {% endif %}
-                                {% endfor %}
-                                {% if kiinnostus.nakyvyys %}
-                                <td>Kaikki käyttäjät</td>
-                                {% else %}
-                                <td>Käyttäjät, jotka hakevat samaa seuraa</td>
-                                {% endif %}
-                                <td>
-                                    {{forms.submit_nappi("#{base_path}/omaProfiilisivu/#{kiinnostus.kiinnostusid}", 
-                                                'Poista', 'btn btn-danger btn-sm')}}
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <input name="nakyvyys" value="{{kiinnostus.nakyvyys}}" type="hidden">
+                    {% if kiinnostus.nakyvyys %}
+                    <td>Kaikki käyttäjät</td>
+                    {% else %}
+                    <td>Käyttäjät, jotka hakevat samaa seuraa</td>
                     {% endif %}
-                    <br>
-                    {{forms.normaali_nappi("#{base_path}/lisaaKiinnostus", "Lisää kiinnostus",'btn btn-primary')}}
-                </div>
-            </div>
+                    <td>
+                        <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-pencil"></span> </button>
+                    </td>
+                     </form>
+                    <td>
+                        <form method="post" action="{{base_path}}/omaProfiilisivu/{{kiinnostus.kiinnostusid}}" style="display: inline-block;">
+                            <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-remove" style="color:red"></span></button>
+                        </form>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+               
+            </table>
+            {% endif %}
+            <br>
+            {{forms.normaali_nappi("#{base_path}/lisaaKiinnostus", "Lisää kiinnostus",'btn btn-primary')}}
         </div>
     </div>
+
+
     {% endblock %}

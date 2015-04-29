@@ -136,6 +136,10 @@ $routes->post('/omaProfiilisivu/:id', function($id) {
     KiinnostuksetController::poistaKiinnostus($id);
 });
 
+$routes->post('/omaProfiilisivu/:id/muuta', function($id) {
+    KiinnostuksetController::muutaKiinnostuksenNakyvyys($id);
+});
+
 $routes->post('/logout', function() {
     UserController::logout();
 });

@@ -15,3 +15,9 @@
     <button type="submit" class="{{napinKoko|default('btn btn-info')}}">{{text|default('Hyväksy')}}</button>
 </form> 
 {% endmacro %}
+
+{% macro nappi_kuvalla(action, kuva) %}
+<form method="post" action="{{action}}" style="display: inline-block;">
+    <button type="submit" class="btn btn-link">kuva</button>
+</form> 
+{% endmacro %}

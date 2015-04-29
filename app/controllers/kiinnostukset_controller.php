@@ -43,4 +43,28 @@ class KiinnostuksetController extends BaseController {
             'maara' => $lukemattomat, 'error' => $error, 'message' => $message));
     }
 
+    public static function muutaKiinnostuksenNakyvyys($kiinnostusid) {
+        self::check_logged_in();
+        $arvot = $_POST;
+        $options = array();
+        if ($arvot) {
+            $options['kiinnostusid'] = $kiinnostusid;
+            $options['kayttajaid'] = self::get_user_logged_in()->id;
+            if ($arvot['nakyvyys'] == 1) {
+                $options['nakyvyys'] = 'false';
+                Kohteet::muutaKiinnostuksenNakyvyys($options);
+            } else {
+                $options['nakyvyys'] = 'true';
+                Kohteet::muutaKiinnostuksenNakyvyys($options);
+            }
+        }
+        $tarkoitukset = Hakutarkoitus::kaikkiHakutarkoitukset();
+        $kiinnostukset = Kohteet::haeKayttajanKiinnostukset(self::get_user_logged_in()->id);
+        $kiinnostustenNimet = Kiinnostukset::haeKaikkiKiinnostukset();
+        $lukemattomat = Vastaanottaja::lukemattomienMaara(self::get_user_logged_in());
+        View::make('kayttaja/omaProfiilisivu.html', array('tarkoitukset' => $tarkoitukset,
+            'maara' => $lukemattomat, 'kiinnostukset' => $kiinnostukset,
+            'kiinnostustenNimet' => $kiinnostustenNimet));
+    }
+
 }

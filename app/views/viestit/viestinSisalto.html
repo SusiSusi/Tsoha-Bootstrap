@@ -2,9 +2,7 @@
 {% block content %}
 
 
-
 {% if viesti.lahettajaid == user_logged_in.id %}
-
 <h3>Keskustelu käyttäjän <a href="{{base_path}}/julkinenProfiilisivu/{{vastaanottaja.id}}">{{vastaanottaja.kayttajatunnus}}</a> kanssa</h3>
 {% else %}
 <h3>Keskustelu käyttäjän <a href="{{base_path}}/julkinenProfiilisivu/{{lahettaja.id}}">{{lahettaja.kayttajatunnus}}</a> kanssa</h3>

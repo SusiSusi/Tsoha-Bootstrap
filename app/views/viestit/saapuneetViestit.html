@@ -13,13 +13,14 @@
 
 {% if viestit %}
 
-<table class="table table-striped table-bordered"  >
+<table class="table table-condensed table-bordered table-striped"  >
     <thead>
         <tr>
             <th>Lähettäjä</th>
             <th>Aihe</th>
             <th>Saapunut</th>
-            <th></th>
+            <th>Merkitse lukemattomaksi</th>
+            <th>Poista</th>
         </tr>
     </thead>
 
@@ -37,10 +38,17 @@
             {% endfor %}
             <td><a href="{{base_path}}/viestinSisalto/{{viesti.id}}">{{viesti.aihe}}</a></td>
             <td>{{viesti.viestinAika()}} <br> {{viesti.viestinPaiva()}}</td>
-            <th>{{forms.submit_nappi("#{base_path}/saapuneetViestit/#{viesti.id}/lukematon", 
-                        'Aseta lukemattomaksi', 'btn btn-primary btn-sm')}}
-                {{forms.poista_nappi("#{base_path}/saapuneetViestit/#{viesti.id}", 'Poista viesti', 
-                    'Oletko varma, että haluat poistaa viestin?','btn btn-danger btn-sm')}}</th>
+            <td>
+                <form method="post" action="{{base_path}}/saapuneetViestit/{{viesti.id}}/lukematon" style="display: inline-block;">
+                    <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-edit"></span></button>
+                </form>
+            </td>
+            <td>
+                <form method="post" action="{{base_path}}/saapuneetViestit/{{viesti.id}}" class="destroy-form" data-confirm='Oletko varma, että haluat poistaa viestin?' style="display: inline-block;">
+                    <button type="submit" class="btn btn-link"><span class="glyphicon glyphicon-remove" style="color:red"></span></button>
+                </form>
+            </td>
+
         </tr>
         {% endfor %}
     </tbody>

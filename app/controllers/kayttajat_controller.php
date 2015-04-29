@@ -123,12 +123,12 @@ class KayttajaController extends BaseController {
     }
 
     public static function luo() {
-        View::make('kayttaja/rekisterointi.html');
+        View::make('rekisteroimaton/rekisterointi.html');
     }
 
     public static function etusivu() {
         $kayttajienMaara = Kayttaja::laskeKayttajienMaara();
-            View::make('kayttaja/etusivu.html', array('kayttajienMaara' => $kayttajienMaara));
+            View::make('rekisteroimaton/etusivu.html', array('kayttajienMaara' => $kayttajienMaara));
     }
 
     public static function kirjautuneenEtusivu() {

@@ -9,7 +9,8 @@ class Kohteet extends BaseModel {
     }
 
     public static function haeKayttajanKiinnostukset($kayttajaid) {
-        $kysely = DB::connection()->prepare('SELECT * FROM Kohteet WHERE kayttajaid = :kayttajaid');
+        $kysely = DB::connection()->prepare('SELECT * FROM Kohteet WHERE kayttajaid = :kayttajaid
+                ORDER BY id desc');
         $kysely->execute(array('kayttajaid' => $kayttajaid));
         $rivit = $kysely->fetchAll();
         $kiinnostukset = array();
@@ -54,9 +55,17 @@ class Kohteet extends BaseModel {
         if ($lista) {
             foreach ($lista as $kiinnostus) {
                 Kint::dump($kiinnostus);
-            Kohteet::poistaKiinnostuksenYhdistys($kiinnostus['kiinnostusid']);
+                Kohteet::poistaKiinnostuksenYhdistys($kiinnostus['kiinnostusid']);
             }
         }
+    }
+
+    public static function muutaKiinnostuksenNakyvyys($arvot) {
+        $kysely = DB::connection()->prepare('UPDATE Kohteet SET nakyvyys = :nakyvyys
+                WHERE kiinnostusid = :kiinnostusid AND kayttajaid = :kayttajaid RETURNING id');
+        $kysely->execute(array('kiinnostusid' => $arvot['kiinnostusid'],
+            'kayttajaid' => $arvot['kayttajaid'], 'nakyvyys' => $arvot['nakyvyys']));
+        $rivi = $kysely->fetch();
     }
 
 }
