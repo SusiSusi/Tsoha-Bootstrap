@@ -13,12 +13,11 @@ Esimerkkiaiheesta poiketen, sovellusta ei luoda PariTELE Oy:lle, sovellus on ilm
 
 ###Sovelluksen testitunnuksia
 Käytä näitä tai tee ikioma tunnus rekisteröitymällä palveluun! :)
-<br>
+
 Käyttäjätunnus | Salasana
 ---------------|---------
 Misuliina|Miisa3
 Salamanteri|Saku1
-<br>
 
 
 ### Linkit suunnittelusivuille
