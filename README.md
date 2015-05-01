@@ -11,7 +11,7 @@ Yleisiä linkkejä:
 Työn aiheena on **ystävänvälityspalvelu**, joka on suurin piirtein tehty kuten esimerkkiaihe ([löytyy täältä](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html)). 
 Esimerkkiaiheesta poiketen, sovellusta ei luoda PariTELE Oy:lle, sovellus on ilmainen eli siitä ei lähetetä laskua käyttäjille ja viestejä ei voi lähettää anonyymisti.
 
-###Testitunnuksia
+###Sovelluksen testitunnuksia
 Käyttäjätunnus | Salasana
 ---------------|---------
 Misuliina|Miisa3
