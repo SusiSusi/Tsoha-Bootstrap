@@ -12,10 +12,14 @@ Työn aiheena on **ystävänvälityspalvelu**, joka on suurin piirtein tehty kut
 Esimerkkiaiheesta poiketen, sovellusta ei luoda PariTELE Oy:lle, sovellus on ilmainen eli siitä ei lähetetä laskua käyttäjille ja viestejä ei voi lähettää anonyymisti.
 
 ###Sovelluksen testitunnuksia
+Käytä näitä tai tee ikioma tunnus rekisteröitymällä palveluun! :)
+<br>
 Käyttäjätunnus | Salasana
 ---------------|---------
 Misuliina|Miisa3
 Salamanteri|Saku1
+<br>
+
 
 ### Linkit suunnittelusivuille
 * [Etusivu](http://susisusi.users.cs.helsinki.fi/tsoha2015//etusivu)
