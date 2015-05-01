@@ -8,8 +8,8 @@ Yleisiä linkkejä:
 
 ## Työn aihe
 
-Työn aiheena on **ystävänvälityspalvelu**, jonka tarkempi kuvaus [löytyy täältä](http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html). 
-Kuvauksesta hiukan poiketen, järjestelmää ei luoda PariTELE Oy:lle. Järjestelmä on myös ilmainen eli siitä ei lähetetä laskua käyttäjille.
+Työn aiheena on **ystävänvälityspalvelu**, joka on suurin piirtein tehty kuten esimerkkiaihe ([löytyy täältä])(http://advancedkittenry.github.io/suunnittelu_ja_tyoymparisto/aiheet/Ystavanvalityspalvelu.html). 
+Esimerkkiaiheesta poiketen, sovellusta ei luoda PariTELE Oy:lle, sovellus on ilmainen eli siitä ei lähetetä laskua käyttäjille ja viestejä ei voi lähettää anonyymisti.
 
 ###Testitunnuksia
 Käyttäjätunnus | Salasana
@@ -25,7 +25,6 @@ Salamanteri|Saku1
 * [Profiilin muokkaus](http://susisusi.users.cs.helsinki.fi/tsoha2015//muokkaaProfiilia)
 
 
-
-
+<br>
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons -lisenssi" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Ystävänvälityspalvelu</span>, jonka tekijä on <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Suvi Sipilä</span>, on lisensoitu <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Nimeä 4.0 Kansainvälinen -lisenssillä</a>.
