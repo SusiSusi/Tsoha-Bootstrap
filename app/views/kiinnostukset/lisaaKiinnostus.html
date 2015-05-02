@@ -2,6 +2,10 @@
 {% block content %}
 {% import "macros/forms.html" as forms %}
 
+{{forms.normaali_nappi("#{base_path}/omaProfiilisivu", 'Takaisin profiilisivulle', 'btn btn-info btn-sm')}}
+<br>
+<br>
+
 {% if error %}
 <div class="alert alert-danger">
     <ul>
@@ -53,7 +57,5 @@
         </div>
     </div>
 </form>
-
-{{forms.normaali_nappi("#{base_path}/omaProfiilisivu", 'Takaisin profiilisivulle')}}
 
 {% endblock %}

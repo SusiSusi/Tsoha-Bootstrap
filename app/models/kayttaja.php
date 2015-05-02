@@ -7,7 +7,8 @@ class Kayttaja extends BaseModel {
 
     public function __construct($attributes) {
         parent::__construct($attributes);
-        $this->validators = array('onkoKayttajatunnusVapaana', 'validateKayttajatunnus');
+        $this->validators = array('onkoKayttajatunnusVapaana', 'validateKayttajatunnus',
+            'validateSalasana');
     }
 
     public function getKayttajatunnus() {
@@ -50,10 +51,10 @@ class Kayttaja extends BaseModel {
     public function validateKayttajatunnus() {
         $errors = array();
         if (!$this->validatePieninPituus($this->kayttajatunnus, 4)) {
-            $errors[] = 'Käyttäjätunnuksen pituuden tulee olla vähintään neljä merkkiä pitkä';
+            $errors[] = 'Käyttäjätunnuksen pituuden tulee olla vähintään neljä merkkiä pitkä.';
         }
         if (!$this->validateSuurinPituus($this->kayttajatunnus, 20)) {
-            $errors[] = 'Käyttäjätunnuksen pituus saa olla enintään 20 merkkiä pitkä';
+            $errors[] = 'Käyttäjätunnuksen pituus saa olla enintään 20 merkkiä pitkä.';
         }
         return $errors;
     }
@@ -77,11 +78,17 @@ class Kayttaja extends BaseModel {
         return true;
     }
 
-    // tämä validointi ei ole (vielä) käytössä!
+    public function uudenSalasananPituusOk($salasana) {
+        if (!$this->validatePieninPituus($salasana, 4)) {
+            return false;
+        }
+        return true;
+    }
+
     public function validateSalasana() {
         $errors = array();
-        if (!$this->validatePieninPituus($this->salasana, 6)) {
-            $errors[] = 'Salasanan pituuden tulee olla vähintään kuusi merkkiä pitkä';
+        if (!$this->validatePieninPituus($this->salasana, 4)) {
+            $errors[] = 'Salasanan pituuden tulee olla vähintään neljä merkkiä pitkä.';
         }
         return $errors;
     }
@@ -255,4 +262,5 @@ class Kayttaja extends BaseModel {
         }
         return null;
     }
+
 }

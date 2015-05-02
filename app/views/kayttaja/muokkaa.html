@@ -2,6 +2,9 @@
 {% block content %}
 {% import "macros/forms.html" as forms %}
 
+{{forms.normaali_nappi("#{base_path}/omaProfiilisivu", 'Palaa profiilisivulle tallentamatta', 'btn btn-info btn-sm')}}
+<br>
+<br>
 {% if errors %}
 <div class="alert alert-danger">
     <ul>
@@ -123,4 +126,5 @@
         <button type="submit" class="btn btn-primary">Tallenna</button>
     </div>
 </form>
+
 {% endblock %}

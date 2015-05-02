@@ -185,6 +185,9 @@ class KayttajaController extends BaseController {
         if (!self::get_user_logged_in()->kaksiSanaaTarkoittaaSamaa($arvot['salasana'], $arvot['salasana2'])) {
             array_push($errors, "Kirjoitit kaksi eri salasanaa. Anna salasana uudelleen.");
         }
+        if (!self::get_user_logged_in()->uudenSalasananPituusOk($arvot['salasana2'])) {
+            array_push($errors, "Salasanan pituuden tulee olla vähintään neljä merkkiä pitkä.");
+        }
         if (!empty($errors)) {
             View::make('kayttaja/vaihdaSalasana.html', array('errors' => $errors));
         } else {
