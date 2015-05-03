@@ -265,6 +265,7 @@ class KayttajaController extends BaseController {
             Kohteet::poistaListanKaikkiKytkokset($kaikkiKiinnostukset);
             $kayttaja = new Kayttaja(array('id' => self::get_user_logged_in()->id));
             $kayttaja->poistaTunnus(self::get_user_logged_in()->id);
+            $_SESSION['kayttajatunnus'] = null;
             Redirect::to('/kirjautuminen', array('message' => 'Käyttäjätunnus poistettu.'));
         }
     }
